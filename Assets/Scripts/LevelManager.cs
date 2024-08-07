@@ -2,76 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Level
-{
-    public int level;
-    public List<Fight> fights;
-}
-
-[System.Serializable]
-public class Fight
-{
-    public int fight;
-    public List<Entity> entities;
-}
-
-[System.Serializable]
-public class Entity
-{
-    public string name;
-    public int speed;
-    public int maxHealth;
-    private int _currentHealth;
-    public int currentHealth
-    {
-        get { return _currentHealth; }
-        set
-        {
-            if (value > maxHealth)
-            {
-                _currentHealth = maxHealth;
-            }
-            else if (value < 0)
-            {
-                _currentHealth = 0;
-            }
-            else
-            {
-                _currentHealth = value;
-            }
-        }
-    }
-    public int attack;
-    public int initiative;
-
-    public void Initialize()
-    {
-        currentHealth = maxHealth;
-    }
-
-    public void RollInitiative()
-    {
-        initiative = Random.Range(1, 20) + speed;
-    }
-
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-    }
-}
-
-[System.Serializable]
-public class LevelData
-{
-    public List<Level> levels;
-}
-
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
     public LevelData levelData;
-    // Start is called before the first frame update
+
     void Start()
     {
         if (instance == null)
@@ -91,8 +26,9 @@ public class LevelManager : MonoBehaviour
             {
                 startFight(l.level, f.fight);
                 Debug.Log("Fight: " + f.fight);
-                foreach (Entity e in f.entities)
+                foreach (FightEntity fe in f.entities)
                 {
+                    Entity e = levelData.entities.Find(entity => entity.id == fe.id);
                     Debug.Log("Entity: " + e.name);
                     Debug.Log("Speed: " + e.speed);
                     Debug.Log("Max Health: " + e.maxHealth);
@@ -116,7 +52,7 @@ public class LevelManager : MonoBehaviour
         {
             e.Initialize();
         }
-        // Add player to the list of entities when I make it
+        //Add player to the list of entities when I make it
         entities = sortByInitiative(entities);
     }
 
@@ -131,13 +67,20 @@ public class LevelManager : MonoBehaviour
                 {
                     if (f.fight == fight)
                     {
-                        entities = f.entities;
-                        return entities; // End the loops and return the list of entities if found
+                        foreach (FightEntity fe in f.entities)
+                        {
+                            Entity e = levelData.entities.Find(entity => entity.id == fe.id);
+                            for (int i = 0; i < fe.count; i++)
+                            {
+                                entities.Add(e);
+                            }
+                        }
+                        return entities;
                     }
                 }
             }
         }
-        return entities; // Return an empty list if no entities are found
+        return entities; //Return an empty list if not found
     }
 
     private List<Entity> sortByInitiative(List<Entity> entities)
