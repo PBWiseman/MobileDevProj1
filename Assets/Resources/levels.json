@@ -1,0 +1,88 @@
+{
+  "levels": [
+    {
+      "level": 1,
+      "fights": [
+        {
+          "fight": 1,
+          "entities": [
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15},
+            {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20}
+          ]
+        },
+        {
+          "fight": 2,
+          "entities": [
+            {"name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25},
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15}
+          ]
+        },
+        {
+          "fight": 3,
+          "entities": [
+            {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20},
+            {"name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25}
+          ]
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "fights": [
+        {
+          "fight": 1,
+          "entities": [
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15},
+            {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20},
+            {"name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25}
+          ]
+        },
+        {
+          "fight": 2,
+          "entities": [
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15},
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15},
+            {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20}
+          ]
+        },
+        {
+          "fight": 3,
+          "entities": [
+            {"name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25},
+            {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20},
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15}
+          ]
+        }
+      ]
+    },
+    {
+      "level": 3,
+      "fights": [
+        {
+          "fight": 1,
+          "entities": [
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15},
+            {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20},
+            {"name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25}
+          ]
+        },
+        {
+          "fight": 2,
+          "entities": [
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15},
+            {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20},
+            {"name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25}
+          ]
+        },
+        {
+          "fight": 3,
+          "entities": [
+            {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15},
+            {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20},
+            {"name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25}
+          ]
+        }
+      ]
+    }
+  ]
+}
