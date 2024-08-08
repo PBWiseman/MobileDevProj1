@@ -34,6 +34,7 @@ public class Entity
     public int experienceReward; // Used for monsters
     public int totalExperience; // Used for players
     public int level; // Used for players
+    public bool isPlayer = false; //False by default, set to true when the entity is a player
 
     public void Initialize()
     {
