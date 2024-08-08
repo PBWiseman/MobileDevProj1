@@ -1,8 +1,8 @@
 {
   "entities": [
-    {"name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15, "experienceReward": 50},
-    {"name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20, "experienceReward": 100},
-    {"name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25, "experienceReward": 150}
+    {"id": 1, "name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15, "experienceReward": 50},
+    {"id": 2, "name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20, "experienceReward": 100},
+    {"id": 3, "name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25, "experienceReward": 150}
   ],
   "levels": [
     {
@@ -11,22 +11,22 @@
         {
           "fight": 1,
           "entities": [
-            {"name": "Goblin", "count": 1},
-            {"name": "Orc", "count": 1}
+            {"id": 1, "count": 1},
+            {"id": 2, "count": 1}
           ]
         },
         {
           "fight": 2,
           "entities": [
-            {"name": "Troll", "count": 1},
-            {"name": "Goblin", "count": 1}
+            {"id": 3, "count": 1},
+            {"id": 1, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"name": "Orc", "count": 1},
-            {"name": "Troll", "count": 1}
+            {"id": 2, "count": 1},
+            {"id": 3, "count": 1}
           ]
         }
       ]
@@ -37,24 +37,24 @@
         {
           "fight": 1,
           "entities": [
-            {"name": "Goblin", "count": 1},
-            {"name": "Orc", "count": 1},
-            {"name": "Troll", "count": 1}
+            {"id": 1, "count": 1},
+            {"id": 2, "count": 1},
+            {"id": 3, "count": 1}
           ]
         },
         {
           "fight": 2,
           "entities": [
-            {"name": "Goblin", "count": 2},
-            {"name": "Orc", "count": 1}
+            {"id": 1, "count": 2},
+            {"id": 2, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"name": "Troll", "count": 1},
-            {"name": "Orc", "count": 1},
-            {"name": "Goblin", "count": 1}
+            {"id": 3, "count": 1},
+            {"id": 2, "count": 1},
+            {"id": 1, "count": 1}
           ]
         }
       ]
@@ -65,25 +65,25 @@
         {
           "fight": 1,
           "entities": [
-            {"name": "Goblin", "count": 1},
-            {"name": "Orc", "count": 1},
-            {"name": "Troll", "count": 1}
+            {"id": 1, "count": 1},
+            {"id": 2, "count": 1},
+            {"id": 3, "count": 1}
           ]
         },
         {
           "fight": 2,
           "entities": [
-            {"name": "Goblin", "count": 1},
-            {"name": "Orc", "count": 1},
-            {"name": "Troll", "count": 1}
+            {"id": 1, "count": 1},
+            {"id": 2, "count": 1},
+            {"id": 3, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"name": "Goblin", "count": 1},
-            {"name": "Orc", "count": 1},
-            {"name": "Troll", "count": 1}
+            {"id": 1, "count": 1},
+            {"id": 2, "count": 1},
+            {"id": 3, "count": 1}
           ]
         }
       ]
