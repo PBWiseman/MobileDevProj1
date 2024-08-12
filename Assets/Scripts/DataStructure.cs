@@ -33,7 +33,20 @@ public class Entity
     public int attack;
     public int initiative;
     public int experienceReward; // Used for monsters
-    public int totalExperience; // Used for players
+    private int _totalExperience; // Used for players
+    public int totalExperience
+    {
+        get { return _totalExperience; }
+        set
+        {
+            //Add the experience to the total experience and level up if needed
+            _totalExperience += value;
+            while (level < _totalExperience / 100) 
+            {
+                LevelUp();
+            }
+        }
+    }
     public int level; // Used for players
     public bool isPlayer = false; //False by default, set to true when the entity is a player
     public bool isDead = false;
@@ -51,6 +64,24 @@ public class Entity
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+    }
+
+    private void LevelUp() //Temporary level up system.
+    {
+        level++;
+        //TODO: Better system with player choice
+        switch (Random.Range(0, 3))
+        {
+            case 0:
+                maxHealth += 10;
+                break;
+            case 1:
+                attack += 2;
+                break;
+            case 2:
+                speed += 1;
+                break;
+        }
     }
 }
 
