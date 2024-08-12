@@ -21,6 +21,7 @@ public class Entity
             }
             else if (value < 0)
             {
+                isDead = true;
                 _currentHealth = 0;
             }
             else
@@ -35,6 +36,7 @@ public class Entity
     public int totalExperience; // Used for players
     public int level; // Used for players
     public bool isPlayer = false; //False by default, set to true when the entity is a player
+    public bool isDead = false;
 
     public void Initialize()
     {
@@ -78,4 +80,10 @@ public class LevelData
 {
     public List<Entity> entities;
     public List<Level> levels;
+}
+
+[System.Serializable]
+public class PlayerData
+{
+    public List<Entity> players;
 }
