@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public void CreateNewPlayer()
     {
         //Load the player in id slot 0 from the playerInfo json file and then save it back as a new player with the next available id
-        players = LoadPlayers();
+        List<Entity> players = LoadPlayers();
         player = players[0]; //Loads from the template player in slot 0
         player.id = players.Count; //Set the player id to the next available id
         player.name = "Bob"; //TODO: Customizable name
@@ -39,7 +39,9 @@ public class GameManager : MonoBehaviour
         FightStates fightResult = TurnManager.instance.MainTurnTracker(player, level, fight);
         if (fightResult == FightStates.Win)
         {
-            //TODO:Player wins
+            //TODO: Give player loot. Maybe health potions?
+            //Give player xp
+            player.totalExperience += LevelManager.instance.getFightXp(level, fight);
         }
         else //The method can only return win or lose, never continue
         {
@@ -47,7 +49,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public List<Entities> LoadPlayers()
+    public List<Entity> LoadPlayers()
     {
         string json = Resources.Load<TextAsset>("playerInfo").text;
         List<Entity> players = JsonUtility.FromJson<PlayerData>(json).players;
