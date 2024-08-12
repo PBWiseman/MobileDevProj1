@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance;
     public LevelData levelData;
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -50,6 +50,11 @@ public class LevelManager : MonoBehaviour
             if (entity != null)
             {
                 entities.AddRange(Enumerable.Repeat(entity, fe.count)); //Add the amount of enemies in the fight
+                //Give each entity a unique name
+                for (int i = 0; i < fe.count; i++)
+                {
+                    entities[entities.Count - 1 - i].name += " " + (i + 1);
+                }
             }
         }
 
@@ -84,12 +89,12 @@ public class LevelManager : MonoBehaviour
         return xp;
     }
 
-    private Level GetLevel(int level)
+    public Level GetLevel(int level)
     {
         return levelData.levels.FirstOrDefault(l => l.level == level);
     }
 
-    private Fight GetFight(Level level, int fight)
+    public Fight GetFight(Level level, int fight)
     {
         return level.fights.FirstOrDefault(f => f.fight == fight);
     }
