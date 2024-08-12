@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class LevelManager : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class LevelManager : MonoBehaviour
         }
 
         List<Entity> entities = new List<Entity>();
-        foreach (FightEntity fe in fightData.entities)
+        foreach (FightEntity fe in selectedFight.entities)
         {
             Entity entity = levelData.entities.Find(e => e.id == fe.id); //Cross reference the entity ID to the entities list.
             if (entity != null)
