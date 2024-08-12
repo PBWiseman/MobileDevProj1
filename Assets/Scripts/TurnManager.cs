@@ -13,7 +13,7 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager instance;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -32,6 +32,7 @@ public class TurnManager : MonoBehaviour
         sortByInitiative(entities);
         do
         {
+            //TODO: Stop deleting enemies and instead set them to dead so the foreach can work fine
             foreach (Entity e in entities)
             {
                 if (e.isPlayer)
@@ -47,18 +48,23 @@ public class TurnManager : MonoBehaviour
                         target = entities[Random.Range(0, entities.Count)];
                     }
                     target.TakeDamage(player.attack);
+                    Debug.Log(player.name + " attacks " + target.name + " for " + player.attack + " damage");
                     if (target.isDead)
                     {
                         entities.Remove(target);
+                        Debug.Log(target.name + " has died");
                     }
                 }
                 else
                 {
                     //Deal the entities attack damage to the player. If the player is dead remove them from the list
                     player.TakeDamage(e.attack);
+                    Debug.Log(e.name + " attacks " + player.name + " for " + e.attack + " damage");
+                    Debug.Log(player.name + " has " + player.currentHealth + " health remaining");
                     if (player.isDead)
                     {
                         entities.Remove(player);
+                        Debug.Log(player.name + " has died");
                     }
                 }
                 switch (checkForEnd(entities))
@@ -68,7 +74,8 @@ public class TurnManager : MonoBehaviour
                     case FightStates.Lose:
                         return FightStates.Lose;
                     case FightStates.Continue:
-                        //Fight continues
+                        //Fight continues. Possibly have a delay here or something so it doesn't speed through?
+                        System.Threading.Thread.Sleep(1000);
                         break;
                 }
             }
