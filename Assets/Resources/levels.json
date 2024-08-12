@@ -1,8 +1,9 @@
 {
   "entities": [
-    {"id": 1, "name": "Goblin", "speed": 10, "maxHealth": 100, "attack": 15, "experienceReward": 50},
-    {"id": 2, "name": "Orc", "speed": 8, "maxHealth": 150, "attack": 20, "experienceReward": 100},
-    {"id": 3, "name": "Troll", "speed": 5, "maxHealth": 200, "attack": 25, "experienceReward": 150}
+    {"id": 0, "name": "Hobgoblin", "speed": 10, "maxHealth": 40, "attack": 15, "experienceReward": 100},
+    {"id": 1, "name": "Goblin", "speed": 10, "maxHealth": 20, "attack": 5, "experienceReward": 50},
+    {"id": 2, "name": "Orc", "speed": 8, "maxHealth": 30, "attack": 10, "experienceReward": 75},
+    {"id": 3, "name": "Troll", "speed": 5, "maxHealth": 50, "attack": 20, "experienceReward": 150}
   ],
   "levels": [
     {
@@ -65,7 +66,7 @@
         {
           "fight": 1,
           "entities": [
-            {"id": 1, "count": 1},
+            {"id": 0, "count": 1},
             {"id": 2, "count": 1},
             {"id": 3, "count": 1}
           ]
@@ -81,7 +82,7 @@
         {
           "fight": 3,
           "entities": [
-            {"id": 1, "count": 1},
+            {"id": 0, "count": 1},
             {"id": 2, "count": 1},
             {"id": 3, "count": 1}
           ]
