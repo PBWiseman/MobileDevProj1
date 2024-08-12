@@ -1,0 +1,15 @@
+{
+  "players": [
+    {
+      "id": 0,
+      "name": "BasePlayer",
+      "speed": 10,
+      "maxHealth": 200,
+      "currentHealth": 200,
+      "attack": 15,
+      "totalExperience": 0,
+      "level": 1,
+      "isPlayer": true
+    }
+  ]
+}
