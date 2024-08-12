@@ -52,14 +52,4 @@ public class LevelManager : MonoBehaviour
         }
         return entities; //Return an empty list if not found
     }
-
-    public List<Entity> sortByInitiative(List<Entity> entities)
-    {
-        foreach (Entity e in entities)
-        {
-            e.RollInitiative();
-        }
-        entities.Sort((a, b) => a.initiative.CompareTo(b.initiative));
-        return entities;
-    }
 }
