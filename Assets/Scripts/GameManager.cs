@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
     private int fight = 1;
     public static GameManager instance;
     public Entity player;
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         if (instance == null)
         {
@@ -21,6 +21,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        CreateNewPlayer();
+        PlayGame();
+        Debug.Log("Game Over");
+    }
+    //TODO: This overwrites the template and doesn't copy it. Fix this
     public void CreateNewPlayer()
     {
         //Load the player in id slot 0 from the playerInfo json file and then save it back as a new player with the next available id
@@ -34,19 +42,51 @@ public class GameManager : MonoBehaviour
         SavePlayers(players);
     }
 
+    private Entity getPlayer(int id)
+    {
+        List<Entity> players = LoadPlayers();
+        Entity player = players.Find(p => p.id == id);
+        return player;
+    }
+
     public void PlayGame()
     {
-        FightStates fightResult = TurnManager.instance.MainTurnTracker(player, level, fight);
-        if (fightResult == FightStates.Win)
+        do
         {
-            //TODO: Give player loot. Maybe health potions?
-            //Give player xp
-            player.totalExperience += LevelManager.instance.getFightXp(level, fight);
-        }
-        else //The method can only return win or lose, never continue
-        {
-            //TODO:Player loses
-        }
+            FightStates fightResult = TurnManager.instance.MainTurnTracker(player, level, fight);
+            if (fightResult == FightStates.Win)
+            {
+                //TODO: Give player loot. Maybe health potions?
+                //Give player xp
+                player.totalExperience += LevelManager.instance.getFightXp(level, fight);
+                Debug.Log("Player has won the fight");
+                Debug.Log("Player has " + player.totalExperience + " experience");
+                Debug.Log("Player is level " + player.level);
+                //Increase fight number unless it is the last fight in the level
+                //In that case increase the level
+                //If the last level is beaten, the player wins
+                if (fight < LevelManager.instance.GetLevel(level).fights.Count)
+                {
+                    fight++;
+                }
+                else if (level < LevelManager.instance.levelData.levels.Count)
+                {
+                    level++;
+                    fight = 1;
+                }
+                else
+                {
+                    //End of the game?
+                    Debug.Log("Player has won the game");
+                    return;
+                }
+            }
+            else //The method can only return win or lose, never continue
+            {
+                Debug.Log("Player has lost the fight");
+                return;
+            }
+        } while (true); //While true because it will return when the game is over
     }
 
     public List<Entity> LoadPlayers()
