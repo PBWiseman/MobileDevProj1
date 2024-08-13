@@ -28,14 +28,14 @@ public class GameManager : MonoBehaviour
         PlayGame();
         Debug.Log("Game Over");
     }
-    //TODO: This overwrites the template and doesn't copy it. Fix this
+
     public void CreateNewPlayer()
     {
-        //Load the player in id slot 0 from the playerInfo json file and then save it back as a new player with the next available id
+        //Copy the player in id slot 0 from the playerInfo json file and then save it back as a new player with the next available id
         List<Entity> players = LoadPlayers();
-        player = players[0]; //Loads from the template player in slot 0
-        player.id = players.Count; //Set the player id to the next available id
-        player.name = "Bob"; //TODO: Customizable name
+        //TODO: Customizable name
+        string newName = "Bob";
+        player = new Entity(players[0], players.Count, newName); //Set the player id to the next available id
         player.Initialize();
         //Save back to the json file
         players.Add(player);
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     {
         List<Entity> players = LoadPlayers();
         Entity player = players.Find(p => p.id == id);
-        return player;
+        return player; //Note to self: This is the actual player entity from the list. It doesn't need to be saved back to it.
     }
 
     public void PlayGame()
