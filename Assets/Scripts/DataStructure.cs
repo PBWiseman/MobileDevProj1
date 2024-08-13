@@ -83,6 +83,19 @@ public class Entity
                 break;
         }
     }
+
+    //Constructor to make a new player as a copy of the template player in id slot 0
+    public Entity(Entity entity, int _id, string _name)
+    {
+        id = _id;
+        name = _name;
+        speed = entity.speed;
+        maxHealth = entity.maxHealth;
+        attack = entity.attack;
+        totalExperience = entity.totalExperience;
+        level = entity.level;
+        isPlayer = entity.isPlayer;
+    }
 }
 
 [System.Serializable]
