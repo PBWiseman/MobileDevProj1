@@ -32,9 +32,12 @@ public class TurnManager : MonoBehaviour
         sortByInitiative(entities);
         do
         {
-            //TODO: Stop deleting enemies and instead set them to dead so the foreach can work fine
             foreach (Entity e in entities)
             {
+                if (e.isDead)
+                {
+                    continue;
+                }
                 if (e.isPlayer)
                 {
                     //Player turn
@@ -51,7 +54,7 @@ public class TurnManager : MonoBehaviour
                     Debug.Log(player.name + " attacks " + target.name + " for " + player.attack + " damage");
                     if (target.isDead)
                     {
-                        entities.Remove(target);
+                        //TODO: Remove sprite
                         Debug.Log(target.name + " has died");
                     }
                 }
@@ -63,7 +66,7 @@ public class TurnManager : MonoBehaviour
                     Debug.Log(player.name + " has " + player.currentHealth + " health remaining");
                     if (player.isDead)
                     {
-                        entities.Remove(player);
+                        //TODO: Remove sprite
                         Debug.Log(player.name + " has died");
                     }
                 }
@@ -104,15 +107,15 @@ public class TurnManager : MonoBehaviour
 
     private FightStates checkForEnd(List<Entity> entities)
     {
-        //If the player is dead than start the end game process
-        //If all enemies are dead then return true
-        //else return false
-        if (entities.FindAll(entity => entity.isPlayer).Count == 0)
+        //If the player has dead flag than return Lose
+        //If all enemies have dead flag then return Win
+        //Otherwise return continue
+        if (entities.FindAll(entity => entity.isDead && entity.isPlayer).Count > 0)
         {
             //Player is dead
             return FightStates.Lose;
         }
-        if (entities.FindAll(entity => !entity.isPlayer).Count == 0)
+        if (entities.FindAll(entity => entity.isDead && !entity.isPlayer).Count == 0)
         {
             //All enemies are dead
             return FightStates.Win;
