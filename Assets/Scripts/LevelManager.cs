@@ -78,10 +78,10 @@ public class LevelManager : MonoBehaviour
         int xp = 0;
         foreach (FightEntity fe in selectedFight.entities)
         {
-            Entity entity = levelData.entities.Find(e => e.id == fe.id); //Cross reference the entity ID to the entities list.
-            if (entity != null)
+            Enemy enemy = levelData.enemies.Find(e => e.monster_id == fe.monster_id); //Cross reference the entity ID to the entities list.
+            if (enemy != null)
             {
-                xp += entity.experienceReward * fe.count;   //Add the xp times the amount of that enemy in the fight
+                xp += enemy.experienceReward * fe.count;   //Add the xp times the amount of that enemy in the fight
             }
         }
 

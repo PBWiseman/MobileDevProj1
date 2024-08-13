@@ -1,17 +1,20 @@
 {
     "players": [
         {
-            "player_id": 0,
+            "fight_id": 0,
             "name": "BasePlayer",
             "speed": 10,
-            "maxHealth": 200,
-            "currentHealth": 200,
+            "maxHealth": 800,
+            "currentHealth": 800,
             "attack": 15,
             "initiative": 0,
-            "experienceReward": 0,
-            "level": 1,
             "isPlayer": true,
-            "isDead": false
+            "isDead": false,
+            "player_id": 0,
+            "currentLevel": 0,
+            "currentFight": 0,
+            "totalExperience": 0,
+            "level": 1
         }
     ]
 }

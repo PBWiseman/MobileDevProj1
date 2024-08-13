@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 60;
         if (instance == null)
         {
             instance = this;
@@ -37,10 +38,9 @@ public class GameManager : MonoBehaviour
         //TODO: Customizable name
         string newName = "Bob";
         player = new Player(players[0], players.Count, newName); //Set the player id to the next available id
-        player.Initialize();
         //Save back to the json file
         players.Add(player);
-        SavePlayers(players);
+        SavePlayers();
     }
 
     private Player getPlayer(int player_id)
@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     public void PlayGame()
     {
+        int safety = 0; //Safety to prevent infinite loops
         do
         {
             player.currentLevel = level;
@@ -64,6 +65,11 @@ public class GameManager : MonoBehaviour
                 //TODO: Give player loot. Maybe health potions?
                 //Give player xp
                 player.totalExperience += LevelManager.instance.getFightXp(level, fight);
+                //Check if the player has leveled up. Temp system until I decide on better xp values
+                while (player.totalExperience >= player.level * 100)
+                {
+                    player.LevelUp();
+                }
                 Debug.Log("Player has won the fight");
                 Debug.Log("Player has " + player.totalExperience + " experience");
                 Debug.Log("Player is level " + player.level);
@@ -83,15 +89,22 @@ public class GameManager : MonoBehaviour
                 {
                     //End of the game?
                     Debug.Log("Player has won the game");
+                    SavePlayers();
                     return;
                 }
             }
             else //The method can only return win or lose, never continue
             {
                 Debug.Log("Player has lost the fight");
+                SavePlayers();
                 return;
             }
-        } while (true); //While true because it will return when the game is over
+            safety++;
+        } while (true && safety < 100); //While true because it will return when the game is over
+        if (safety >= 100)
+        {
+            Debug.LogError("GameManager infinite loop detected");
+        }
     }
 
     public List<Player> LoadPlayers()
