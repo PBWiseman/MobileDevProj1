@@ -46,14 +46,13 @@ public class LevelManager : MonoBehaviour
         List<Entity> entities = new List<Entity>();
         foreach (FightEntity fe in selectedFight.entities)
         {
-            Entity entity = levelData.entities.Find(e => e.id == fe.id); //Cross reference the entity ID to the entities list.
-            if (entity != null)
+            Enemy enemyTemplate = levelData.enemies.Find(e => e.monster_id == fe.monster_id); // Cross reference the entity ID to the enemy list.
+            if (enemyTemplate != null)
             {
-                entities.AddRange(Enumerable.Repeat(entity, fe.count)); //Add the amount of enemies in the fight
-                //Give each entity a unique name
                 for (int i = 0; i < fe.count; i++)
                 {
-                    entities[entities.Count - 1 - i].name += " " + (i + 1);
+                    Enemy newEnemy = new Enemy(enemyTemplate, i + 1, entities.Count); //Passes through the enemy template, the count of the enemy, and a unique fight id
+                    entities.Add(newEnemy);
                 }
             }
         }

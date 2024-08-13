@@ -1,9 +1,9 @@
 {
-  "entities": [
-    {"id": 0, "name": "Hobgoblin", "speed": 10, "maxHealth": 40, "attack": 15, "experienceReward": 100},
-    {"id": 1, "name": "Goblin", "speed": 10, "maxHealth": 20, "attack": 5, "experienceReward": 50},
-    {"id": 2, "name": "Orc", "speed": 8, "maxHealth": 30, "attack": 10, "experienceReward": 75},
-    {"id": 3, "name": "Troll", "speed": 5, "maxHealth": 50, "attack": 20, "experienceReward": 150}
+  "enemies": [
+    {"monster_id": 0, "name": "Hobgoblin", "speed": 10, "maxHealth": 40, "currentHealth": 40, "attack": 15, "experienceReward": 100},
+    {"monster_id": 1, "name": "Goblin", "speed": 10, "maxHealth": 20, "currentHealth": 20, "attack": 5, "experienceReward": 50},
+    {"monster_id": 2, "name": "Orc", "speed": 8, "maxHealth": 30, "currentHealth": 30, "attack": 10, "experienceReward": 75},
+    {"monster_id": 3, "name": "Troll", "speed": 5, "maxHealth": 50, "currentHealth": 50, "attack": 20, "experienceReward": 150}
   ],
   "levels": [
     {
@@ -12,22 +12,22 @@
         {
           "fight": 1,
           "entities": [
-            {"id": 1, "count": 1},
-            {"id": 2, "count": 1}
+            {"monster_id": 1, "count": 1},
+            {"monster_id": 2, "count": 1}
           ]
         },
         {
           "fight": 2,
           "entities": [
-            {"id": 3, "count": 1},
-            {"id": 1, "count": 1}
+            {"monster_id": 3, "count": 1},
+            {"monster_id": 1, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"id": 2, "count": 1},
-            {"id": 3, "count": 1}
+            {"monster_id": 2, "count": 1},
+            {"monster_id": 3, "count": 1}
           ]
         }
       ]
@@ -38,24 +38,24 @@
         {
           "fight": 1,
           "entities": [
-            {"id": 1, "count": 1},
-            {"id": 2, "count": 1},
-            {"id": 3, "count": 1}
+            {"monster_id": 1, "count": 1},
+            {"monster_id": 2, "count": 1},
+            {"monster_id": 3, "count": 1}
           ]
         },
         {
           "fight": 2,
           "entities": [
-            {"id": 1, "count": 2},
-            {"id": 2, "count": 1}
+            {"monster_id": 1, "count": 2},
+            {"monster_id": 2, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"id": 3, "count": 1},
-            {"id": 2, "count": 1},
-            {"id": 1, "count": 1}
+            {"monster_id": 3, "count": 1},
+            {"monster_id": 2, "count": 1},
+            {"monster_id": 1, "count": 1}
           ]
         }
       ]
@@ -66,25 +66,25 @@
         {
           "fight": 1,
           "entities": [
-            {"id": 0, "count": 1},
-            {"id": 2, "count": 1},
-            {"id": 3, "count": 1}
+            {"monster_id": 0, "count": 1},
+            {"monster_id": 2, "count": 1},
+            {"monster_id": 3, "count": 1}
           ]
         },
         {
           "fight": 2,
           "entities": [
-            {"id": 1, "count": 1},
-            {"id": 2, "count": 1},
-            {"id": 3, "count": 1}
+            {"monster_id": 1, "count": 1},
+            {"monster_id": 2, "count": 1},
+            {"monster_id": 3, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"id": 0, "count": 1},
-            {"id": 2, "count": 1},
-            {"id": 3, "count": 1}
+            {"monster_id": 0, "count": 1},
+            {"monster_id": 2, "count": 1},
+            {"monster_id": 3, "count": 1}
           ]
         }
       ]

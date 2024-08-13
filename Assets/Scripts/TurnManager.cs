@@ -12,7 +12,6 @@ public enum FightStates //So the checkForEnd function doesn't need to deal with 
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager instance;
-    // Start is called before the first frame update
     void Awake()
     {
         if (instance == null)
@@ -28,8 +27,14 @@ public class TurnManager : MonoBehaviour
     public FightStates MainTurnTracker(Entity player, int level, int fight) //This is a list of all entities in the fight sorted by initiative
     {
         List<Entity> entities = startFight(level, fight);
+        player.fight_id = entities.Count; //Give the player a new fight id for each fight
         entities.Add(player);
         sortByInitiative(entities);
+        //Debug all entities with initiative and health
+        foreach (Entity e in entities)
+        {
+            Debug.Log(e.name + " has " + e.initiative + " initiative and " + e.currentHealth + " health");
+        }
         do
         {
             foreach (Entity e in entities)
@@ -52,6 +57,7 @@ public class TurnManager : MonoBehaviour
                     }
                     target.TakeDamage(player.attack);
                     Debug.Log(player.name + " attacks " + target.name + " for " + player.attack + " damage");
+                    Debug.Log(target.name + " has " + target.currentHealth + " health remaining");
                     if (target.isDead)
                     {
                         //TODO: Remove sprite
@@ -78,7 +84,7 @@ public class TurnManager : MonoBehaviour
                         return FightStates.Lose;
                     case FightStates.Continue:
                         //Fight continues. Possibly have a delay here or something so it doesn't speed through?
-                        System.Threading.Thread.Sleep(1000);
+                        System.Threading.Thread.Sleep(5000);
                         break;
                 }
             }
@@ -107,17 +113,21 @@ public class TurnManager : MonoBehaviour
 
     private FightStates checkForEnd(List<Entity> entities)
     {
-        //If the player has dead flag than return Lose
-        //If all enemies have dead flag then return Win
-        //Otherwise return continue
-        if (entities.FindAll(entity => entity.isDead && entity.isPlayer).Count > 0)
+        bool enemiesDead = false;
+
+        foreach (Entity e in entities)
         {
-            //Player is dead
-            return FightStates.Lose;
+            if (entity.isPlayer && entity.isDead) //If player is dead return as a loss right away
+            {
+                return FightStates.Lose;
+            }
+            if (!entity.isPlayer && !entity.isDead) //If any enemy is alive then the player hasn't won
+            {
+                allEnemiesAreDead = false;
+            }
         }
-        if (entities.FindAll(entity => entity.isDead && !entity.isPlayer).Count == 0)
+        if (allEnemiesAreDead)
         {
-            //All enemies are dead
             return FightStates.Win;
         }
         return FightStates.Continue;

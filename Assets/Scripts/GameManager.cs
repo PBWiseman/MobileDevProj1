@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
     private int level = 1;
     private int fight = 1;
     public static GameManager instance;
-    public Entity player;
+    public Player player;
+    public List<Player> players;
 
     void Awake()
     {
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CreateNewPlayer();
+        CreateNewPlayer(); //TODO: Option to load or make new player
         PlayGame();
         Debug.Log("Game Over");
     }
@@ -32,20 +33,20 @@ public class GameManager : MonoBehaviour
     public void CreateNewPlayer()
     {
         //Copy the player in id slot 0 from the playerInfo json file and then save it back as a new player with the next available id
-        List<Entity> players = LoadPlayers();
+        players = LoadPlayers();
         //TODO: Customizable name
         string newName = "Bob";
-        player = new Entity(players[0], players.Count, newName); //Set the player id to the next available id
+        player = new Player(players[0], players.Count, newName); //Set the player id to the next available id
         player.Initialize();
         //Save back to the json file
         players.Add(player);
         SavePlayers(players);
     }
 
-    private Entity getPlayer(int id)
+    private Player getPlayer(int player_id)
     {
-        List<Entity> players = LoadPlayers();
-        Entity player = players.Find(p => p.id == id);
+        List<Player> players = LoadPlayers();
+        Player player = players.Find(p => p.player_id == player_id);
         return player; //Note to self: This is the actual player entity from the list. It doesn't need to be saved back to it.
     }
 
@@ -53,6 +54,10 @@ public class GameManager : MonoBehaviour
     {
         do
         {
+            player.currentLevel = level;
+            player.currentFight = fight; //Set the player's current level and fight for saving
+            SavePlayers();
+            Debug.Log("Level " + level + " Fight " + fight);
             FightStates fightResult = TurnManager.instance.MainTurnTracker(player, level, fight);
             if (fightResult == FightStates.Win)
             {
@@ -89,18 +94,18 @@ public class GameManager : MonoBehaviour
         } while (true); //While true because it will return when the game is over
     }
 
-    public List<Entity> LoadPlayers()
+    public List<Player> LoadPlayers()
     {
         string json = Resources.Load<TextAsset>("playerInfo").text;
-        List<Entity> players = JsonUtility.FromJson<PlayerData>(json).players;
+        List<Player> players = JsonUtility.FromJson<PlayerData>(json).players;
         return players;
     }
 
-    public void SavePlayers(List<Entity> players)
+    public void SavePlayers()
     {
         PlayerData pd = new PlayerData();
         pd.players = players;
-        string json = JsonUtility.ToJson(pd);
+        string json = JsonUtility.ToJson(pd, true);
         System.IO.File.WriteAllText(Application.dataPath + "/Resources/playerInfo.json", json);
     }
 }
