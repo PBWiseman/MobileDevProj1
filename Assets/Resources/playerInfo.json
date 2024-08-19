@@ -1,0 +1,68 @@
+{
+    "players": [
+        {
+            "fight_id": 0,
+            "name": "BasePlayer",
+            "speed": 10,
+            "maxHealth": 800,
+            "currentHealth": 800,
+            "attack": 15,
+            "initiative": 0,
+            "isPlayer": true,
+            "isDead": false,
+            "player_id": 0,
+            "currentLevel": 0,
+            "currentFight": 0,
+            "totalExperience": 0,
+            "level": 1
+        },
+        {
+            "fight_id": 3,
+            "name": "Bob",
+            "speed": 30,
+            "maxHealth": 1013,
+            "currentHealth": 883,
+            "attack": 78,
+            "initiative": 42,
+            "isPlayer": true,
+            "isDead": false,
+            "player_id": 1,
+            "currentLevel": 3,
+            "currentFight": 3,
+            "totalExperience": 2200,
+            "level": 23
+        },
+        {
+            "fight_id": 3,
+            "name": "Bob",
+            "speed": 26,
+            "maxHealth": 1041,
+            "currentHealth": 901,
+            "attack": 83,
+            "initiative": 33,
+            "isPlayer": true,
+            "isDead": false,
+            "player_id": 2,
+            "currentLevel": 3,
+            "currentFight": 3,
+            "totalExperience": 2200,
+            "level": 23
+        },
+        {
+            "fight_id": 3,
+            "name": "Bob",
+            "speed": 39,
+            "maxHealth": 954,
+            "currentHealth": 844,
+            "attack": 64,
+            "initiative": 46,
+            "isPlayer": true,
+            "isDead": false,
+            "player_id": 3,
+            "currentLevel": 3,
+            "currentFight": 3,
+            "totalExperience": 2200,
+            "level": 23
+        }
+    ]
+}
