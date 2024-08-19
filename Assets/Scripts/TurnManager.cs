@@ -10,9 +10,12 @@ public enum FightStates //So the checkForEnd function doesn't need to deal with 
     Continue
 }
 
+
 public class TurnManager : MonoBehaviour
 {
+    public FightStates currentState;
     public static TurnManager instance;
+    public bool running = false;
     void Awake()
     {
         if (instance == null)
@@ -27,7 +30,6 @@ public class TurnManager : MonoBehaviour
 
     public FightStates MainTurnTracker(Entity player, int level, int fight) //This is a list of all entities in the fight sorted by initiative
     {
-        int safety = 0; //Safety to prevent infinite loops
         List<Entity> entities = startFight(level, fight);
         player.fight_id = entities.Count; //Give the player a new fight id for each fight
         entities.Add(player);
@@ -37,6 +39,18 @@ public class TurnManager : MonoBehaviour
         {
             Debug.Log(e.name + " has " + e.initiative + " initiative and " + e.currentHealth + " health");
         }
+        StartCoroutine(mainTurns(player, entities));
+        do
+        {
+            //wait for the fight to end
+        } while (!running); //Will continue until the fight is over
+        return currentState;
+    }
+
+    private IEnumerator mainTurns(Entity player, List<Entity> entities)
+    {
+        running = true;
+        int safety = 0;
         do
         {
             foreach (Entity e in entities)
@@ -49,8 +63,7 @@ public class TurnManager : MonoBehaviour
                 {
                     //Player turn
                     //Deal the players attack damage to a randomly selected enemy that is not the player (will be changed to selection later)
-                    //Ugly rerolling code but it will be changed to player target later so I am fine with it
-                    
+
                     //TODO: Change to player target selection
                     List<Entity> validTargets = entities.Where(e => !e.isPlayer && !e.isDead).ToList();
 
@@ -88,18 +101,29 @@ public class TurnManager : MonoBehaviour
                 switch (checkForEnd(entities))
                 {
                     case FightStates.Win:
-                        return FightStates.Win;
+                        currentState = FightStates.Win;
+                        break;
                     case FightStates.Lose:
-                        return FightStates.Lose;
+                        currentState = FightStates.Lose;
+                        break;
                     case FightStates.Continue:
-                        //Fight continues. Possibly have a delay here or something so it doesn't speed through?
+                        yield return new WaitForSeconds(1); //Delay between turns
+                        //Fight continues.
                         break;
                 }
             }
             safety++;
-        } while (true && safety < 100); //When the fight is over the function will return so this can be a while true
-        Debug.Log("TurnManager safety reached 100. Ending game");
-        return FightStates.Lose;
+        } while (safety < 100 && currentState == FightStates.Continue);
+        if (safety >= 100)
+        {
+            currentState = FightStates.Lose; //If you run for 100 turns without a win or loss then you lose. Can change this later if there is a valid case for that many turns
+            Debug.Log("TurnManager safety reached 100. Ending game");
+        }
+        else
+        {
+            Debug.Log("Fight ended");
+        }
+        running = false;
     }
 
     private List<Entity> startFight(int level, int fight)
