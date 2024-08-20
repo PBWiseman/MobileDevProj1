@@ -13,9 +13,8 @@ public enum FightStates //So the checkForEnd function doesn't need to deal with 
 
 public class TurnManager : MonoBehaviour
 {
-    public FightStates currentState;
+    public FightStates currentState = FightStates.Continue;
     public static TurnManager instance;
-    public bool running = false;
     void Awake()
     {
         if (instance == null)
@@ -28,28 +27,18 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    public FightStates MainTurnTracker(Entity player, int level, int fight) //This is a list of all entities in the fight sorted by initiative
+    public IEnumerator MainTurnTracker(Entity player, int level, int fight) //This is a list of all entities in the fight sorted by initiative
     {
         List<Entity> entities = startFight(level, fight);
         player.fight_id = entities.Count; //Give the player a new fight id for each fight
         entities.Add(player);
         sortByInitiative(entities);
         //Debug all entities with initiative and health
+        Debug.Log($"Started level {level}: fight {fight}");
         foreach (Entity e in entities)
         {
-            Debug.Log(e.name + " has " + e.initiative + " initiative and " + e.currentHealth + " health");
+            Debug.Log($"{e.name}: {e.initiative} init |{e.currentHealth} health");
         }
-        StartCoroutine(mainTurns(player, entities));
-        do
-        {
-            //wait for the fight to end
-        } while (!running); //Will continue until the fight is over
-        return currentState;
-    }
-
-    private IEnumerator mainTurns(Entity player, List<Entity> entities)
-    {
-        running = true;
         int safety = 0;
         do
         {
@@ -61,42 +50,11 @@ public class TurnManager : MonoBehaviour
                 }
                 if (e.isPlayer)
                 {
-                    //Player turn
-                    //Deal the players attack damage to a randomly selected enemy that is not the player (will be changed to selection later)
-
-                    //TODO: Change to player target selection
-                    List<Entity> validTargets = entities.Where(e => !e.isPlayer && !e.isDead).ToList();
-
-                    // Check if there are any valid targets
-                    if (validTargets.Count > 0)
-                    {
-                        // Select a random target from the filtered list
-                        Entity target = validTargets[Random.Range(0, validTargets.Count)];
-                        target.TakeDamage(player.attack);
-                        Debug.Log(player.name + " attacks " + target.name + " for " + player.attack + " damage");
-                        Debug.Log(target.name + " has " + target.currentHealth + " health remaining");
-                        if (target.isDead)
-                        {
-                            //TODO: Remove sprite
-                            Debug.Log(target.name + " has died");
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("No valid targets available.");
-                    }
+                    playerTurn(e, entities);
                 }
                 else
                 {
-                    //Deal the entities attack damage to the player. If the player is dead remove them from the list
-                    player.TakeDamage(e.attack);
-                    Debug.Log(e.name + " attacks " + player.name + " for " + e.attack + " damage");
-                    Debug.Log(player.name + " has " + player.currentHealth + " health remaining");
-                    if (player.isDead)
-                    {
-                        //TODO: Remove sprite
-                        Debug.Log(player.name + " has died");
-                    }
+                    enemyTurn(e, player);
                 }
                 switch (checkForEnd(entities))
                 {
@@ -107,6 +65,7 @@ public class TurnManager : MonoBehaviour
                         currentState = FightStates.Lose;
                         break;
                     case FightStates.Continue:
+                        currentState = FightStates.Continue;
                         yield return new WaitForSeconds(1); //Delay between turns
                         //Fight continues.
                         break;
@@ -117,21 +76,72 @@ public class TurnManager : MonoBehaviour
         if (safety >= 100)
         {
             currentState = FightStates.Lose; //If you run for 100 turns without a win or loss then you lose. Can change this later if there is a valid case for that many turns
-            Debug.Log("TurnManager safety reached 100. Ending game");
+            Debug.Log("TurnManager safety reached 100. Ending fight");
         }
         else
         {
             Debug.Log("Fight ended");
         }
-        running = false;
+
     }
 
+
+    private void playerTurn(Entity player, List<Entity> entities)
+    {
+        //Player turn
+        //Deal the players attack damage to a randomly selected enemy that is not the player (will be changed to selection later)
+
+        //TODO: Change to player target selection
+        List<Entity> validTargets = entities.Where(e => !e.isPlayer && !e.isDead).ToList();
+
+        // Check if there are any valid targets
+        if (validTargets.Count > 0)
+        {
+            // Select a random target from the filtered list
+            Entity target = validTargets[Random.Range(0, validTargets.Count)];
+            target.TakeDamage(player.attack);
+            Debug.Log(player.name + " attacks " + target.name + " for " + player.attack + " damage");
+            Debug.Log(target.name + " has " + target.currentHealth + " health remaining");
+            if (target.isDead)
+            {
+                //TODO: Remove sprite
+                Debug.Log(target.name + " has died");
+            }
+        }
+        else
+        {
+            Debug.Log("No valid targets available.");
+        }
+    }
+
+    private void enemyTurn(Entity e, Entity player)
+    {
+        //Deal the entities attack damage to the player. If the player is dead remove them from the list
+        player.TakeDamage(e.attack);
+        Debug.Log(e.name + " attacks " + player.name + " for " + e.attack + " damage");
+        Debug.Log(player.name + " has " + player.currentHealth + " health remaining");
+        if (player.isDead)
+        {
+            //TODO: Remove sprite
+            Debug.Log(player.name + " has died");
+        }
+    }
+
+    /// <summary>
+    /// Gets the enemies for a given level and fight number
+    /// </summary>
+    /// <param name="level">The level to start the fight in</param>
+    /// <param name="fight">The fight number to start</param>
     private List<Entity> startFight(int level, int fight)
     {
         List<Entity> entities = LevelManager.instance.getEntities(level, fight);
         return entities;
     }
 
+    /// <summary>
+    /// Sorts the entities by initiative
+    /// </summary>
+    /// <param name="entities">The list of entities to sort</param>
     private List<Entity> sortByInitiative(List<Entity> entities)
     {
         foreach (Entity e in entities)
@@ -142,6 +152,11 @@ public class TurnManager : MonoBehaviour
         return entities;
     }
 
+    /// <summary>
+    /// Checks if the fight has ended
+    /// </summary>
+    /// <param name="entities">The list of entities in the fight</param>
+    /// <returns>Win, Lose, or Continue</returns>
     private FightStates checkForEnd(List<Entity> entities)
     {
         bool enemiesDead = true;

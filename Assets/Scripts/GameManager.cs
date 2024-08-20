@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public Player player;
     public List<Player> players;
+    private bool GameOver = false; //TODO: Implement game over state
 
     void Awake()
     {
@@ -27,8 +28,54 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         CreateNewPlayer(); //TODO: Option to load or make new player
-        PlayGame();
-        Debug.Log("Game Over");
+        startNewFight();
+    }
+
+    void Update()
+    {
+        if (GameOver)
+        {
+            return;
+        }
+        if (TurnManager.instance.currentState == FightStates.Win)
+        {
+            //TODO: Give player loot. Maybe health potions?
+            player.totalExperience += LevelManager.instance.getFightXp(level, fight);
+            //Check if the player has leveled up. Temp system until I decide on better xp values
+            while (player.totalExperience >= player.level * 100)
+            {
+                player.LevelUp();
+            }
+            Debug.Log($"{player.name} | lvl{player.level} | {player.totalExperience}xp");
+            //Increase fight number unless it is the last fight in the level
+            //In that case increase the level
+            //If the last level is beaten, the player wins
+            if (fight < LevelManager.instance.GetLevel(level).fights.Count)
+            {
+                fight++;
+            }
+            else if (level < LevelManager.instance.levelData.levels.Count)
+            {
+                level++;
+                fight = 1;
+            }
+            else
+            {
+                //End of the game?
+                Debug.Log("Player has won the game");
+                SavePlayers();
+                GameOver = true;
+                return;
+            }
+            TurnManager.instance.currentState = FightStates.Continue;
+            startNewFight();
+        }
+        else if (TurnManager.instance.currentState == FightStates.Lose)
+        {
+            Debug.Log("Player has died");
+            SavePlayers();
+            GameOver = true;
+        }
     }
 
     public void CreateNewPlayer()
@@ -50,61 +97,12 @@ public class GameManager : MonoBehaviour
         return player; //Note to self: This is the actual player entity from the list. It doesn't need to be saved back to it.
     }
 
-    public void PlayGame()
+    private void startNewFight()
     {
-        int safety = 0; //Safety to prevent infinite loops
-        do
-        {
-            player.currentLevel = level;
-            player.currentFight = fight; //Set the player's current level and fight for saving
-            SavePlayers();
-            Debug.Log("Level " + level + " Fight " + fight);
-            FightStates fightResult = TurnManager.instance.MainTurnTracker(player, level, fight);
-            if (fightResult == FightStates.Win)
-            {
-                //TODO: Give player loot. Maybe health potions?
-                //Give player xp
-                player.totalExperience += LevelManager.instance.getFightXp(level, fight);
-                //Check if the player has leveled up. Temp system until I decide on better xp values
-                while (player.totalExperience >= player.level * 100)
-                {
-                    player.LevelUp();
-                }
-                Debug.Log("Player has won the fight");
-                Debug.Log("Player has " + player.totalExperience + " experience");
-                Debug.Log("Player is level " + player.level);
-                //Increase fight number unless it is the last fight in the level
-                //In that case increase the level
-                //If the last level is beaten, the player wins
-                if (fight < LevelManager.instance.GetLevel(level).fights.Count)
-                {
-                    fight++;
-                }
-                else if (level < LevelManager.instance.levelData.levels.Count)
-                {
-                    level++;
-                    fight = 1;
-                }
-                else
-                {
-                    //End of the game?
-                    Debug.Log("Player has won the game");
-                    SavePlayers();
-                    return;
-                }
-            }
-            else //The method can only return win or lose, never continue
-            {
-                Debug.Log("Player has lost the fight");
-                SavePlayers();
-                return;
-            }
-            safety++;
-        } while (true && safety < 100); //While true because it will return when the game is over
-        if (safety >= 100)
-        {
-            Debug.LogError("GameManager infinite loop detected");
-        }
+        player.currentLevel = level;
+        player.currentFight = fight; //Set the player's current level and fight for saving
+        SavePlayers();
+        StartCoroutine(TurnManager.instance.MainTurnTracker(player, level, fight));
     }
 
     public List<Player> LoadPlayers()
