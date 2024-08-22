@@ -1,9 +1,8 @@
 {
   "enemies": [
-    {"monster_id": 0, "name": "Hobgoblin", "speed": 10, "maxHealth": 40, "currentHealth": 40, "attack": 15, "experienceReward": 100},
-    {"monster_id": 1, "name": "Goblin", "speed": 10, "maxHealth": 20, "currentHealth": 20, "attack": 5, "experienceReward": 50},
-    {"monster_id": 2, "name": "Orc", "speed": 8, "maxHealth": 30, "currentHealth": 30, "attack": 10, "experienceReward": 75},
-    {"monster_id": 3, "name": "Troll", "speed": 5, "maxHealth": 50, "currentHealth": 50, "attack": 20, "experienceReward": 150}
+    {"monster_id": 0, "name": "Evil Wizard", "speed": 10, "maxHealth": 40, "currentHealth": 40, "attack": 15, "experienceReward": 100, "prefabDataPath": "EvilWizard"},
+    {"monster_id": 1, "name": "Heavy Bandit", "speed": 10, "maxHealth": 20, "currentHealth": 20, "attack": 5, "experienceReward": 50, "prefabDataPath": "HeavyBandit"},
+    {"monster_id": 2, "name": "Light Bandit", "speed": 8, "maxHealth": 30, "currentHealth": 30, "attack": 10, "experienceReward": 75, "prefabDataPath": "LightBandit"}
   ],
   "levels": [
     {
@@ -19,7 +18,7 @@
         {
           "fight": 2,
           "entities": [
-            {"monster_id": 3, "count": 1},
+            {"monster_id": 0, "count": 1},
             {"monster_id": 1, "count": 1}
           ]
         },
@@ -27,7 +26,7 @@
           "fight": 3,
           "entities": [
             {"monster_id": 2, "count": 1},
-            {"monster_id": 3, "count": 1}
+            {"monster_id": 0, "count": 1}
           ]
         }
       ]
@@ -40,7 +39,7 @@
           "entities": [
             {"monster_id": 1, "count": 1},
             {"monster_id": 2, "count": 1},
-            {"monster_id": 3, "count": 1}
+            {"monster_id": 0, "count": 1}
           ]
         },
         {
@@ -53,7 +52,7 @@
         {
           "fight": 3,
           "entities": [
-            {"monster_id": 3, "count": 1},
+            {"monster_id": 0, "count": 1},
             {"monster_id": 2, "count": 1},
             {"monster_id": 1, "count": 1}
           ]
@@ -68,7 +67,7 @@
           "entities": [
             {"monster_id": 0, "count": 1},
             {"monster_id": 2, "count": 1},
-            {"monster_id": 3, "count": 1}
+            {"monster_id": 1, "count": 1}
           ]
         },
         {
@@ -76,7 +75,7 @@
           "entities": [
             {"monster_id": 1, "count": 1},
             {"monster_id": 2, "count": 1},
-            {"monster_id": 3, "count": 1}
+            {"monster_id": 0, "count": 1}
           ]
         },
         {
@@ -84,7 +83,7 @@
           "entities": [
             {"monster_id": 0, "count": 1},
             {"monster_id": 2, "count": 1},
-            {"monster_id": 3, "count": 1}
+            {"monster_id": 1, "count": 1}
           ]
         }
       ]
