@@ -29,21 +29,21 @@ public class LevelManager : MonoBehaviour
 
     //The code for getting levels and fights was many nested foreach loops.
     //I asked GitHub Copilot if there was a way to make it more efficient and readable and it suggested using LINQ
-    public List<Entity> getEntities(int level, int fight)
+    public List<Enemy> getEntities(int level, int fight)
     {
         Level selectedLevel = GetLevel(level);
         if (selectedLevel == null)
         {
-            return new List<Entity>(); //Return empty if null
+            return new List<Enemy>(); //Return empty if null
         }
 
         Fight selectedFight = GetFight(selectedLevel, fight);
         if (selectedFight == null)
         {
-            return new List<Entity>(); //Return empty if null
+            return new List<Enemy>(); //Return empty if null
         }
 
-        List<Entity> entities = new List<Entity>();
+        List<Enemy> enemies = new List<Enemy>();
         foreach (FightEntity fe in selectedFight.entities)
         {
             Enemy enemyTemplate = levelData.enemies.Find(e => e.monster_id == fe.monster_id); // Cross reference the entity ID to the enemy list.
@@ -51,13 +51,13 @@ public class LevelManager : MonoBehaviour
             {
                 for (int i = 0; i < fe.count; i++)
                 {
-                    Enemy newEnemy = new Enemy(enemyTemplate, i + 1, entities.Count); //Passes through the enemy template, the count of the enemy, and a unique fight id
-                    entities.Add(newEnemy);
+                    Enemy newEnemy = new Enemy(enemyTemplate, i + 1, enemies.Count); //Passes through the enemy template, the count of the enemy, and a unique fight id
+                    enemies.Add(newEnemy);
                 }
             }
         }
 
-        return entities;
+        return enemies;
     }
 
     //Get the xp from a fight

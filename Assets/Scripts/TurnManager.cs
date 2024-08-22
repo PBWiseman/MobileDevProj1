@@ -15,6 +15,7 @@ public class TurnManager : MonoBehaviour
 {
     public FightStates currentState = FightStates.Continue;
     public static TurnManager instance;
+    [SerializeField] private List<GameObject> spawnPoints;
     void Awake()
     {
         if (instance == null)
@@ -104,7 +105,10 @@ public class TurnManager : MonoBehaviour
             Debug.Log(target.name + " has " + target.currentHealth + " health remaining");
             if (target.isDead)
             {
-                //TODO: Remove sprite
+                //Remove sprite
+                Enemy enemyTarget = (Enemy)target;
+                Destroy(enemyTarget.prefab);
+                
                 Debug.Log(target.name + " has died");
             }
         }
@@ -129,14 +133,28 @@ public class TurnManager : MonoBehaviour
 
     /// <summary>
     /// Gets the enemies for a given level and fight number
+    /// Also spawns the enemies at the spawn points
     /// </summary>
     /// <param name="level">The level to start the fight in</param>
     /// <param name="fight">The fight number to start</param>
     private List<Entity> startFight(int level, int fight)
     {
-        List<Entity> entities = LevelManager.instance.getEntities(level, fight);
+        List<Enemy> enemies = LevelManager.instance.getEntities(level, fight);
+        List<Entity> entities = new List<Entity>();
+        foreach (Enemy e in enemies)
+        {
+            if (spawnPoints.Count < e.fight_id + 1)
+            {
+                Debug.LogError("Not enough spawn points for all entities");
+                break;
+            }
+            // Spawn the enemy at successive spawn points
+            e.prefab = Instantiate(e.prefab, spawnPoints[e.fight_id].transform.position + e.prefab.transform.position, Quaternion.identity);
+            entities.Add(e);
+        }
         return entities;
     }
+    
 
     /// <summary>
     /// Sorts the entities by initiative
