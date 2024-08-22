@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +13,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     public List<Player> players;
     private bool GameOver = false; //TODO: Implement game over state
+    private string savePath => Application.persistentDataPath + "/playerInfo.json";
 
     void Awake()
     {
@@ -78,13 +82,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void CreateNewPlayer()
+    private void CreateNewPlayer()
     {
-        //Copy the player in id slot 0 from the playerInfo json file and then save it back as a new player with the next available id
         players = LoadPlayers();
+        Player playerTemplate = LoadPlayerTemplate();
         //TODO: Customizable name
         string newName = "Bob";
-        player = new Player(players[0], players.Count, newName); //Set the player id to the next available id
+        player = new Player(playerTemplate, players.Count, newName); //Set the player id to the next available id
         //Save back to the json file
         players.Add(player);
         SavePlayers();
@@ -105,18 +109,33 @@ public class GameManager : MonoBehaviour
         StartCoroutine(TurnManager.instance.MainTurnTracker(player, level, fight));
     }
 
-    public List<Player> LoadPlayers()
+    private List<Player> LoadPlayers()
     {
-        string json = Resources.Load<TextAsset>("playerInfo").text;
-        List<Player> players = JsonUtility.FromJson<PlayerData>(json).players;
+        string json;
+        if (File.Exists(savePath))
+        {
+            json = File.ReadAllText(savePath);
+            List<Player> players = JsonUtility.FromJson<PlayerData>(json).players;
+        }
+        else
+        {
+            players = new List<Player>();
+        }
         return players;
     }
 
-    public void SavePlayers()
+    private Player LoadPlayerTemplate()
+    {
+        string json = Resources.Load<TextAsset>("playerInfoTemplate").text;
+        Player player = JsonUtility.FromJson<PlayerData>(json).players[0]; //There will only be one player in the template file
+        return player;
+    }
+
+    private void SavePlayers()
     {
         PlayerData pd = new PlayerData();
         pd.players = players;
         string json = JsonUtility.ToJson(pd, true);
-        System.IO.File.WriteAllText(Application.dataPath + "/Resources/playerInfo.json", json);
+        File.WriteAllText(savePath, json);
     }
 }
