@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
+using UnityEngine.UI;
 
 public enum FightStates //So the checkForEnd function doesn't need to deal with the end game state
 {
@@ -150,6 +152,9 @@ public class TurnManager : MonoBehaviour
             }
             // Spawn the enemy at successive spawn points
             e.prefab = Instantiate(e.prefab, spawnPoints[e.fight_id].transform.position + e.prefab.transform.position, Quaternion.identity);
+            e.healthBar = e.prefab.GetComponentInChildren<Slider>();
+            e.healthText = e.healthBar.GetComponentInChildren<TextMeshProUGUI>();
+            e.TakeDamage(0); //Telling it to take 0 damage to update the health bar
             entities.Add(e);
         }
         return entities;
