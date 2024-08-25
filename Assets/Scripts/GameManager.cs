@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Linq;
 using System;
 using System.IO;
+using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class GameManager : MonoBehaviour
     public List<Player> players;
     private bool GameOver = false; //TODO: Implement game over state
     private string savePath => Application.persistentDataPath + "/playerInfo.json";
+    public GameObject playerSpawnPoint;
 
     void Awake()
     {
@@ -89,9 +92,19 @@ public class GameManager : MonoBehaviour
         //TODO: Customizable name
         string newName = "Bob";
         player = new Player(playerTemplate, players.Count, newName); //Set the player id to the next available id
+        spawnPlayer(player);
+
         //Save back to the json file
         players.Add(player);
         SavePlayers();
+    }
+
+    private void spawnPlayer(Player player)
+    {
+        player.prefab = Instantiate(player.prefab, playerSpawnPoint.transform.position, Quaternion.identity);
+        player.healthBar = player.prefab.GetComponentInChildren<Slider>();
+        player.healthText = player.healthBar.GetComponentInChildren<TextMeshProUGUI>();
+        player.TakeDamage(0); //Telling it to take 0 damage to update the health bar
     }
 
     private Player getPlayer(int player_id)

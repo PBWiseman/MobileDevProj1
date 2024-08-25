@@ -14,7 +14,8 @@
             "currentLevel": 0,
             "currentFight": 0,
             "totalExperience": 0,
-            "level": 1
+            "level": 1,
+            "prefabDataPath": "HeroKnight"
         }
     ]
 }

@@ -19,6 +19,7 @@ public class Entity
     public GameObject prefab; //The prefab to spawn in the fight
     public Slider healthBar; //The health bar for the entity
     public TextMeshProUGUI healthText; //The health text for the entity
+    public string prefabDataPath; //The path to the prefab in the resources folder
 
     public void RollInitiative()
     {

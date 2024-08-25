@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 51339289}
   m_Layer: 0
-  m_Name: EnemySpawns
+  m_Name: Spawns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,6 +151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 97797363}
   - {fileID: 550439090}
   - {fileID: 1512706863}
   - {fileID: 72954112}
@@ -182,6 +183,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 51339289}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &97797362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 97797363}
+  m_Layer: 0
+  m_Name: PlayerSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &97797363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97797362}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -630,12 +662,17 @@ MonoBehaviour:
     initiative: 0
     isPlayer: 0
     isDead: 0
+    prefab: {fileID: 0}
+    healthBar: {fileID: 0}
+    healthText: {fileID: 0}
+    prefabDataPath: 
     player_id: 0
     currentLevel: 0
     currentFight: 0
     totalExperience: 0
     level: 0
   players: []
+  playerSpawnPoint: {fileID: 97797362}
 --- !u!1 &1960185207
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,63 +720,6 @@ MonoBehaviour:
   levelData:
     enemies: []
     levels: []
---- !u!1001 &2072114668148521597
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -4.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2126397746688878371, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6191136655933995121, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
-      propertyPath: m_Name
-      value: HeroKnight
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 39059cc076433a844acbf2c5e135f1fb, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -747,6 +727,5 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 269182855}
   - {fileID: 1381310571}
-  - {fileID: 2072114668148521597}
   - {fileID: 1010137491}
   - {fileID: 51339289}

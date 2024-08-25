@@ -36,13 +36,9 @@ public class TurnManager : MonoBehaviour
         player.fight_id = entities.Count; //Give the player a new fight id for each fight
         entities.Add(player);
         sortByInitiative(entities);
-        //Debug all entities with initiative and health
-        Debug.Log($"Started level {level}: fight {fight}");
-        foreach (Entity e in entities)
-        {
-            Debug.Log($"{e.name}: {e.initiative} init |{e.currentHealth} health");
-        }
         int safety = 0;
+        currentState = FightStates.Continue;
+        yield return new WaitForSeconds(2); //Delay after spawn but before the first turn
         do
         {
             foreach (Entity e in entities)
@@ -62,9 +58,11 @@ public class TurnManager : MonoBehaviour
                 switch (checkForEnd(entities))
                 {
                     case FightStates.Win:
+                        yield return new WaitForSeconds(2); //Delay before the next fight in place of end turn stuff
                         currentState = FightStates.Win;
                         break;
                     case FightStates.Lose:
+                        yield return new WaitForSeconds(2); //Delay before the next fight in place of end turn stuff
                         currentState = FightStates.Lose;
                         break;
                     case FightStates.Continue:
@@ -79,7 +77,7 @@ public class TurnManager : MonoBehaviour
         if (safety >= 100)
         {
             currentState = FightStates.Lose; //If you run for 100 turns without a win or loss then you lose. Can change this later if there is a valid case for that many turns
-            Debug.Log("TurnManager safety reached 100. Ending fight");
+            Debug.LogWarning("TurnManager safety reached 100. Ending fight");
         }
         else
         {
@@ -103,15 +101,11 @@ public class TurnManager : MonoBehaviour
             // Select a random target from the filtered list
             Entity target = validTargets[Random.Range(0, validTargets.Count)];
             target.TakeDamage(player.attack);
-            Debug.Log(player.name + " attacks " + target.name + " for " + player.attack + " damage");
-            Debug.Log(target.name + " has " + target.currentHealth + " health remaining");
             if (target.isDead)
             {
                 //Remove sprite
                 Enemy enemyTarget = (Enemy)target;
                 Destroy(enemyTarget.prefab);
-                
-                Debug.Log(target.name + " has died");
             }
         }
         else
@@ -124,8 +118,6 @@ public class TurnManager : MonoBehaviour
     {
         //Deal the entities attack damage to the player. If the player is dead remove them from the list
         player.TakeDamage(e.attack);
-        Debug.Log(e.name + " attacks " + player.name + " for " + e.attack + " damage");
-        Debug.Log(player.name + " has " + player.currentHealth + " health remaining");
         if (player.isDead)
         {
             //TODO: Remove sprite
@@ -151,7 +143,7 @@ public class TurnManager : MonoBehaviour
                 break;
             }
             // Spawn the enemy at successive spawn points
-            e.prefab = Instantiate(e.prefab, spawnPoints[e.fight_id].transform.position + e.prefab.transform.position, Quaternion.identity);
+            e.prefab = Instantiate(e.prefab, spawnPoints[e.fight_id].transform.position, Quaternion.identity);
             e.healthBar = e.prefab.GetComponentInChildren<Slider>();
             e.healthText = e.healthBar.GetComponentInChildren<TextMeshProUGUI>();
             e.TakeDamage(0); //Telling it to take 0 damage to update the health bar

@@ -1,8 +1,8 @@
 {
   "enemies": [
-    {"monster_id": 0, "name": "Evil Wizard", "speed": 10, "maxHealth": 40, "currentHealth": 40, "attack": 15, "experienceReward": 100, "prefabDataPath": "EvilWizard"},
-    {"monster_id": 1, "name": "Heavy Bandit", "speed": 10, "maxHealth": 20, "currentHealth": 20, "attack": 5, "experienceReward": 50, "prefabDataPath": "HeavyBandit"},
-    {"monster_id": 2, "name": "Light Bandit", "speed": 8, "maxHealth": 30, "currentHealth": 30, "attack": 10, "experienceReward": 75, "prefabDataPath": "LightBandit"}
+    {"monster_id": 0, "name": "Evil Wizard", "speed": 10, "maxHealth": 20, "currentHealth": 20, "attack": 15, "experienceReward": 100, "prefabDataPath": "EvilWizard"},
+    {"monster_id": 1, "name": "Heavy Bandit", "speed": 10, "maxHealth": 30, "currentHealth": 30, "attack": 10, "experienceReward": 75, "prefabDataPath": "HeavyBandit"},
+    {"monster_id": 2, "name": "Light Bandit", "speed": 8, "maxHealth": 20, "currentHealth": 20, "attack": 5, "experienceReward": 50, "prefabDataPath": "LightBandit"}
   ],
   "levels": [
     {

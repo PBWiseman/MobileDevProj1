@@ -18,6 +18,7 @@ public class Player : Entity
         this.totalExperience = player.totalExperience;
         this.level = player.level;
         this.isPlayer = true;
+        this.prefab = Resources.Load<GameObject>(player.prefabDataPath);
     }
 
     public void LevelUp() //Temporary level up system.
@@ -30,6 +31,7 @@ public class Player : Entity
                 int healthIncrease = Random.Range(20, 40);
                 maxHealth += healthIncrease;
                 currentHealth += healthIncrease;
+                TakeDamage(0); //Updates the health bar
                 break;
             case 1:
                 attack += Random.Range(5, 10);
