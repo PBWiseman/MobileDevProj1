@@ -23,7 +23,7 @@ public class Player : Entity
         this.prefab = Resources.Load<GameObject>(player.prefabDataPath);
     }
 
-    //Copy constructor
+    //Copy constructor for saving to the file
     public Player(Player player) : base(player.name, player.speed, player.maxHealth, player.attack, player.currentHealth)
     {
         this.player_id = player.player_id;
@@ -31,6 +31,11 @@ public class Player : Entity
         this.level = player.level;
         this.isPlayer = true;
         this.prefab = Resources.Load<GameObject>(player.prefabDataPath);
+        this.currentLevel = player.currentLevel;
+        this.currentFight = player.currentFight;
+        this.prefabDataPath = player.prefabDataPath;
+        this.isDead = player.isDead;
+        this.gameWon = player.gameWon;
     }
 
     public void LevelUp() //Temporary level up system.

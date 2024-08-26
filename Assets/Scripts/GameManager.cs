@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
                 GameOver = true;
                 return;
             }
+            SavePlayers(); //After each turn
             TurnManager.instance.currentState = FightStates.Continue;
             startNewFight();
         }
@@ -130,12 +131,13 @@ public class GameManager : MonoBehaviour
         {
             json = File.ReadAllText(savePath);
             List<Player> players = JsonUtility.FromJson<PlayerData>(json).players;
+            return players;
         }
         else
         {
             players = new List<Player>();
+            return players;
         }
-        return players;
     }
 
     private Player LoadPlayerTemplate()
