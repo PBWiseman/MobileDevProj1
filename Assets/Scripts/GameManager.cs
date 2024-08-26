@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 //End of the game?
+                player.gameWon = true;
                 Debug.Log("Player has won the game");
                 SavePlayers();
                 GameOver = true;
@@ -101,6 +102,10 @@ public class GameManager : MonoBehaviour
 
     private void spawnPlayer(Player player)
     {
+        if (player.prefab == null)
+        {
+            player.LoadPrefab();
+        }
         player.prefab = Instantiate(player.prefab, playerSpawnPoint.transform.position, Quaternion.identity);
         player.healthBar = player.prefab.GetComponentInChildren<Slider>();
         player.healthText = player.healthBar.GetComponentInChildren<TextMeshProUGUI>();
@@ -111,6 +116,7 @@ public class GameManager : MonoBehaviour
     {
         List<Player> players = LoadPlayers();
         Player player = players.Find(p => p.player_id == player_id);
+        spawnPlayer(player);
         return player; //Note to self: This is the actual player entity from the list. It doesn't need to be saved back to it.
     }
 
@@ -147,6 +153,17 @@ public class GameManager : MonoBehaviour
     private void SavePlayers()
     {
         PlayerData pd = new PlayerData();
+        //Make a new list without some of the fields that don't need to be saved
+        List<Player> players = new List<Player>();
+        foreach (Player p in this.players)
+        {
+            Player player = new Player(p);
+            player.prefab = null;
+            player.healthBar = null;
+            player.healthText = null;
+            player.fight_id = null;
+            players.Add(player);
+        }
         pd.players = players;
         string json = JsonUtility.ToJson(pd, true);
         File.WriteAllText(savePath, json);
