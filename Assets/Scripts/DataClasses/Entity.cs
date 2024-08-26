@@ -20,6 +20,7 @@ public class Entity
     public Slider healthBar; //The health bar for the entity
     public TextMeshProUGUI healthText; //The health text for the entity
     public string prefabDataPath; //The path to the prefab in the resources folder
+    private Animator animator; //The animator for the entity
 
     public void RollInitiative()
     {
@@ -39,11 +40,20 @@ public class Entity
             //Convert the health to a float between 0 and 1
             healthBar.value = (float)currentHealth / maxHealth;
         }
+        else
+        {
+            Debug.LogError("No health bar found");
+        }
         if (healthText != null)
         {
             healthText.text = $"{currentHealth}";
         }
+        else
+        {
+            Debug.LogError("No health text found");
+        }
     }
+
     public Entity(string name, int speed, int maxHealth, int attack, int currentHealth)
     {
         this.name = name;
@@ -52,5 +62,59 @@ public class Entity
         this.currentHealth = currentHealth;
         this.attack = attack;
         this.isDead = false;
+        this.prefab = Resources.Load<GameObject>(prefabDataPath);
+    }
+
+    public void playAnimation(string animation)
+    {
+        if (animator == null)
+        {
+            try
+            {
+                animator = prefab.GetComponentInChildren<Animator>();
+            }
+            catch 
+            {
+                Debug.LogError("No animator found");
+                return;
+            }
+        }
+        //Trigger the animation
+        animator.SetTrigger(animation);
+    }
+
+    public void SetAnimState(int state)
+    {
+        if (animator == null)
+        {
+            try
+            {
+                animator = prefab.GetComponentInChildren<Animator>();
+            }
+            catch
+            {
+                Debug.LogError("No animator found");
+                return;
+            }
+        }
+        //Set the animation state int
+        animator.SetInteger("AnimState", state);
+    }
+
+    public void GameSetup()
+    {
+        if (healthBar == null)
+        {
+            healthBar = prefab.GetComponentInChildren<Slider>();
+        }
+        if (healthText == null)
+        {
+            healthText = healthBar.GetComponentInChildren<TextMeshProUGUI>();
+        }
+        if (animator == null)
+        {
+            animator = prefab.GetComponentInChildren<Animator>();
+        }
+        TakeDamage(0); //Telling it to take 0 damage to update the health bar
     }
 }

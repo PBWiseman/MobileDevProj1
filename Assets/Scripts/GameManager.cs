@@ -102,14 +102,9 @@ public class GameManager : MonoBehaviour
 
     private void spawnPlayer(Player player)
     {
-        if (player.prefab == null)
-        {
-            player.LoadPrefab();
-        }
+        //Instantiate prefab from resources
         player.prefab = Instantiate(player.prefab, playerSpawnPoint.transform.position, Quaternion.identity);
-        player.healthBar = player.prefab.GetComponentInChildren<Slider>();
-        player.healthText = player.healthBar.GetComponentInChildren<TextMeshProUGUI>();
-        player.TakeDamage(0); //Telling it to take 0 damage to update the health bar
+        player.GameSetup();
     }
 
     private Player getPlayer(int player_id)
@@ -154,17 +149,17 @@ public class GameManager : MonoBehaviour
     {
         PlayerData pd = new PlayerData();
         //Make a new list without some of the fields that don't need to be saved
-        List<Player> players = new List<Player>();
-        foreach (Player p in this.players)
+        List<Player> playerSaves = new List<Player>();
+        foreach (Player p in players)
         {
             Player player = new Player(p);
             player.prefab = null;
             player.healthBar = null;
             player.healthText = null;
-            player.fight_id = null;
-            players.Add(player);
+            player.fight_id = -1;
+            playerSaves.Add(player);
         }
-        pd.players = players;
+        pd.players = playerSaves;
         string json = JsonUtility.ToJson(pd, true);
         File.WriteAllText(savePath, json);
     }

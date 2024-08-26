@@ -47,14 +47,83 @@ public class TurnManager : MonoBehaviour
                 {
                     continue;
                 }
+                //Set this entity to always be rendered on top
+                SpriteRenderer r = e.prefab.GetComponentInChildren<SpriteRenderer>();
+                r.sortingOrder = 2;
                 if (e.isPlayer)
                 {
-                    playerTurn(e, entities);
+                    //Player turn
+                    List<Entity> validTargets = entities.Where(e => !e.isPlayer && !e.isDead).ToList();
+                    if (validTargets.Count > 0)
+                    {
+                        // Select a random target from the filtered list
+                        //TODO: Change to player target selection
+                        Entity target = validTargets[Random.Range(0, validTargets.Count)];
+                        float startingPos = e.prefab.transform.position.x;
+                        player.SetAnimState(1);
+                        while (e.prefab.transform.position.x < startingPos + 1)
+                        {
+                            e.prefab.transform.position += new Vector3(0.1f, 0, 0);
+                            yield return new WaitForSeconds(0.01f);
+                        }
+                        player.SetAnimState(0);
+                        player.playAnimation("Attack1");
+                        yield return new WaitForSeconds(0.25f);
+                        target.TakeDamage(player.attack);
+                        target.playAnimation("Hurt");
+                        yield return new WaitForSeconds(0.25f);
+                        player.SetAnimState(1);
+                        while (e.prefab.transform.position.x > startingPos)
+                        {
+                            e.prefab.transform.position -= new Vector3(0.1f, 0, 0);
+                            yield return new WaitForSeconds(0.01f);
+                        }
+                        player.SetAnimState(0);
+                        if (target.isDead)
+                        {
+                            //Remove sprite
+                            target.playAnimation("Death");
+                            yield return new WaitForSeconds(1);
+                            Enemy enemyTarget = (Enemy)target;
+                            Destroy(enemyTarget.prefab);
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("No valid targets available.");
+                    }
                 }
                 else
                 {
-                    enemyTurn(e, player);
+                    //Deal the entities attack damage to the player. If the player is dead remove them from the list
+                    float startingPos = e.prefab.transform.position.x;
+                    e.SetAnimState(1);
+                    while (e.prefab.transform.position.x > startingPos - 1)
+                    {
+                        e.prefab.transform.position -= new Vector3(0.1f, 0, 0);
+                        yield return new WaitForSeconds(0.01f);
+                    }
+                    e.SetAnimState(0);
+                    e.playAnimation("Attack");
+                    yield return new WaitForSeconds(0.4f);
+                    player.TakeDamage(e.attack);
+                    player.playAnimation("Hurt");
+                    yield return new WaitForSeconds(0.25f);
+                    e.SetAnimState(1);
+                    while (e.prefab.transform.position.x < startingPos)
+                    {
+                        e.prefab.transform.position += new Vector3(0.1f, 0, 0);
+                        yield return new WaitForSeconds(0.01f);
+                    }
+                    e.SetAnimState(0);
+                    if (player.isDead)
+                    {
+                        player.playAnimation("Death");
+                        //TODO: Remove sprite
+                        Debug.Log(player.name + " has died");
+                    }
                 }
+                r.sortingOrder = 1;
                 switch (checkForEnd(entities))
                 {
                     case FightStates.Win:
@@ -86,45 +155,6 @@ public class TurnManager : MonoBehaviour
 
     }
 
-
-    private void playerTurn(Entity player, List<Entity> entities)
-    {
-        //Player turn
-        //Deal the players attack damage to a randomly selected enemy that is not the player (will be changed to selection later)
-
-        //TODO: Change to player target selection
-        List<Entity> validTargets = entities.Where(e => !e.isPlayer && !e.isDead).ToList();
-
-        // Check if there are any valid targets
-        if (validTargets.Count > 0)
-        {
-            // Select a random target from the filtered list
-            Entity target = validTargets[Random.Range(0, validTargets.Count)];
-            target.TakeDamage(player.attack);
-            if (target.isDead)
-            {
-                //Remove sprite
-                Enemy enemyTarget = (Enemy)target;
-                Destroy(enemyTarget.prefab);
-            }
-        }
-        else
-        {
-            Debug.Log("No valid targets available.");
-        }
-    }
-
-    private void enemyTurn(Entity e, Entity player)
-    {
-        //Deal the entities attack damage to the player. If the player is dead remove them from the list
-        player.TakeDamage(e.attack);
-        if (player.isDead)
-        {
-            //TODO: Remove sprite
-            Debug.Log(player.name + " has died");
-        }
-    }
-
     /// <summary>
     /// Gets the enemies for a given level and fight number
     /// Also spawns the enemies at the spawn points
@@ -144,9 +174,7 @@ public class TurnManager : MonoBehaviour
             }
             // Spawn the enemy at successive spawn points
             e.prefab = Instantiate(e.prefab, spawnPoints[e.fight_id].transform.position, Quaternion.identity);
-            e.healthBar = e.prefab.GetComponentInChildren<Slider>();
-            e.healthText = e.healthBar.GetComponentInChildren<TextMeshProUGUI>();
-            e.TakeDamage(0); //Telling it to take 0 damage to update the health bar
+            e.GameSetup();
             entities.Add(e);
         }
         return entities;
