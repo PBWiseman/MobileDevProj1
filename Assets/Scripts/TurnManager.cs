@@ -140,6 +140,10 @@ public class TurnManager : MonoBehaviour
                         //Fight continues.
                         break;
                 }
+                if (currentState != FightStates.Continue)
+                {
+                    break;
+                }
             }
             safety++;
         } while (safety < 100 && currentState == FightStates.Continue);
