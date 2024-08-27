@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+
 [System.Serializable]
 public class Entity
 {
@@ -30,10 +31,16 @@ public class Entity
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        if (damage > 0)
+        {
+            playAnimation("Hurt");
+        }
         if (currentHealth <= 0)
         {
             isDead = true;
             currentHealth = 0;
+            //Start the death coroutine
+            EntityDeath();
         }
         if (healthBar != null)
         {
@@ -116,5 +123,19 @@ public class Entity
             animator = prefab.GetComponentInChildren<Animator>();
         }
         TakeDamage(0); //Telling it to take 0 damage to update the health bar
+    }
+
+    public void HideHealthBar()
+    {
+        healthBar.gameObject.SetActive(false);
+        healthText.gameObject.SetActive(false);
+    }
+
+    private void EntityDeath()
+    {
+        HideHealthBar();
+        playAnimation("Death");
+        GameObject.Destroy(prefab, 2f);
+        //Once the death animation is done, destroy the entity
     }
 }

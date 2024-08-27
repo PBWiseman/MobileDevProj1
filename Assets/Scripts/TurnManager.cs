@@ -12,11 +12,20 @@ public enum FightStates //So the checkForEnd function doesn't need to deal with 
     Continue
 }
 
+public enum Attacks
+{
+    Attack1,
+    Attack2,
+    Attack3,
+    None
+}
 
 public class TurnManager : MonoBehaviour
 {
     public FightStates currentState = FightStates.Continue;
     public static TurnManager instance;
+    private Entity selectedTarget;
+    private Attacks selectedAttack;
     [SerializeField] private List<GameObject> spawnPoints;
     void Awake()
     {
@@ -56,37 +65,17 @@ public class TurnManager : MonoBehaviour
                     List<Entity> validTargets = entities.Where(e => !e.isPlayer && !e.isDead).ToList();
                     if (validTargets.Count > 0)
                     {
-                        // Select a random target from the filtered list
-                        //TODO: Change to player target selection
-                        Entity target = validTargets[Random.Range(0, validTargets.Count)];
-                        float startingPos = e.prefab.transform.position.x;
-                        player.SetAnimState(1);
-                        while (e.prefab.transform.position.x < startingPos + 1)
-                        {
-                            e.prefab.transform.position += new Vector3(0.1f, 0, 0);
-                            yield return new WaitForSeconds(0.01f);
-                        }
-                        player.SetAnimState(0);
-                        player.playAnimation("Attack1");
+                        selectedTarget = null;
+                        ShowTargetSelectionUI(validTargets);
+                        yield return StartCoroutine(WaitForTargetSelection());
+                        selectedAttack = Attacks.None;
+                        ShowAttackSelectionUI();
+                        yield return StartCoroutine(WaitForAttackSelection());
+                        yield return Movement(e, 1);
                         yield return new WaitForSeconds(0.25f);
-                        target.TakeDamage(player.attack);
-                        target.playAnimation("Hurt");
+                        selectedTarget.TakeDamage(player.attack);
                         yield return new WaitForSeconds(0.25f);
-                        player.SetAnimState(1);
-                        while (e.prefab.transform.position.x > startingPos)
-                        {
-                            e.prefab.transform.position -= new Vector3(0.1f, 0, 0);
-                            yield return new WaitForSeconds(0.01f);
-                        }
-                        player.SetAnimState(0);
-                        if (target.isDead)
-                        {
-                            //Remove sprite
-                            target.playAnimation("Death");
-                            yield return new WaitForSeconds(1);
-                            Enemy enemyTarget = (Enemy)target;
-                            Destroy(enemyTarget.prefab);
-                        }
+                        yield return Movement(e, -1);
                     }
                     else
                     {
@@ -96,32 +85,12 @@ public class TurnManager : MonoBehaviour
                 else
                 {
                     //Deal the entities attack damage to the player. If the player is dead remove them from the list
-                    float startingPos = e.prefab.transform.position.x;
-                    e.SetAnimState(1);
-                    while (e.prefab.transform.position.x > startingPos - 1)
-                    {
-                        e.prefab.transform.position -= new Vector3(0.1f, 0, 0);
-                        yield return new WaitForSeconds(0.01f);
-                    }
-                    e.SetAnimState(0);
+                    yield return Movement(e, 1);
                     e.playAnimation("Attack");
                     yield return new WaitForSeconds(0.4f);
                     player.TakeDamage(e.attack);
-                    player.playAnimation("Hurt");
                     yield return new WaitForSeconds(0.25f);
-                    e.SetAnimState(1);
-                    while (e.prefab.transform.position.x < startingPos)
-                    {
-                        e.prefab.transform.position += new Vector3(0.1f, 0, 0);
-                        yield return new WaitForSeconds(0.01f);
-                    }
-                    e.SetAnimState(0);
-                    if (player.isDead)
-                    {
-                        player.playAnimation("Death");
-                        //TODO: Remove sprite
-                        Debug.Log(player.name + " has died");
-                    }
+                    yield return Movement(e, -1);
                 }
                 r.sortingOrder = 1;
                 switch (checkForEnd(entities))
@@ -156,7 +125,77 @@ public class TurnManager : MonoBehaviour
         {
             Debug.Log("Fight ended");
         }
+    }
 
+    private IEnumerator Movement(Entity e, float distance)
+    {
+        e.SetAnimState(1);
+        float targetPos = e.prefab.transform.position.x + distance;
+        float step;
+        if (distance < 0)
+        {
+            step = -0.1f;
+        }
+        else
+        {
+            step = 0.1f;
+        }
+
+        while ((distance > 0 && e.prefab.transform.position.x < targetPos) ||
+            (distance < 0 && e.prefab.transform.position.x > targetPos))
+        {
+            e.prefab.transform.position += new Vector3(step, 0, 0);
+            yield return new WaitForSeconds(0.01f);
+        }
+        e.SetAnimState(0);
+    }
+
+    /// <summary>
+    /// Coroutine to handle the death of an entity
+    /// </summary>
+    /// <param name="e">The entity to kill</param>
+    private IEnumerator EntityDeath(Entity e)
+    {
+        //yield return new WaitForSeconds(1);
+        e.HideHealthBar();
+        e.playAnimation("Death");
+        yield return new WaitForSeconds(1);
+        Destroy(e.prefab);
+    }
+
+    private IEnumerator WaitForAttackSelection()
+    {
+        while (selectedAttack == Attacks.None)
+        {
+            yield return null;
+        }
+    }
+
+    private void ShowAttackSelectionUI()
+    {
+        //Show the attack selection UI
+    }
+
+    private IEnumerator WaitForTargetSelection()
+    {
+        while (selectedTarget == null)
+        {
+            yield return null;
+        }
+    }
+
+    private void ShowTargetSelectionUI(List<Entity> validTargets)
+    {
+        //Show the target selection UI
+    }
+
+    /// <summary>
+    /// Handles the menu selection of a target
+    /// </summary>
+    /// <param name="target">The target selected</param>
+    private void OnTargetSelected(Entity target)
+    {
+        selectedTarget = target;
     }
 
     /// <summary>
