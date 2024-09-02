@@ -24,9 +24,13 @@ public class TurnManager : MonoBehaviour
 {
     public FightStates currentState = FightStates.Continue;
     public static TurnManager instance;
-    private Entity selectedTarget;
+    private Enemy selectedTarget;
     private Attacks selectedAttack;
     [SerializeField] private List<GameObject> spawnPoints;
+    [SerializeField] private GameObject attackSelectionUI;
+    [SerializeField] private GameObject targetSelectionUI;
+    private List<Enemy> validTargets;
+    
     void Awake()
     {
         if (instance == null)
@@ -62,7 +66,7 @@ public class TurnManager : MonoBehaviour
                 if (e.isPlayer)
                 {
                     //Player turn
-                    List<Entity> validTargets = entities.Where(e => !e.isPlayer && !e.isDead).ToList();
+                    validTargets = entities.OfType<Enemy>().Where(e => !e.isPlayer && !e.isDead).ToList();
                     if (validTargets.Count > 0)
                     {
                         selectedTarget = null;
@@ -71,9 +75,12 @@ public class TurnManager : MonoBehaviour
                         selectedAttack = Attacks.None;
                         ShowAttackSelectionUI();
                         yield return StartCoroutine(WaitForAttackSelection());
+                        player.playAnimation(selectedAttack.ToString());
                         yield return Movement(e, 1);
                         yield return new WaitForSeconds(0.25f);
                         selectedTarget.TakeDamage(player.attack);
+                        selectedTarget.toggleColor();
+                        selectedTarget.toggleTarget();
                         yield return new WaitForSeconds(0.25f);
                         yield return Movement(e, -1);
                     }
@@ -85,12 +92,12 @@ public class TurnManager : MonoBehaviour
                 else
                 {
                     //Deal the entities attack damage to the player. If the player is dead remove them from the list
-                    yield return Movement(e, 1);
+                    yield return Movement(e, -1);
                     e.playAnimation("Attack");
                     yield return new WaitForSeconds(0.4f);
                     player.TakeDamage(e.attack);
                     yield return new WaitForSeconds(0.25f);
-                    yield return Movement(e, -1);
+                    yield return Movement(e, 1);
                 }
                 r.sortingOrder = 1;
                 switch (checkForEnd(entities))
@@ -169,11 +176,18 @@ public class TurnManager : MonoBehaviour
         {
             yield return null;
         }
+        yield return new WaitForSeconds(0.25f);
     }
 
     private void ShowAttackSelectionUI()
     {
-        //Show the attack selection UI
+        attackSelectionUI.SetActive(true);
+    }
+
+    public void selectAttack(int attack)
+    {
+        selectedAttack = (Attacks)attack;
+        attackSelectionUI.SetActive(false);
     }
 
     private IEnumerator WaitForTargetSelection()
@@ -182,18 +196,45 @@ public class TurnManager : MonoBehaviour
         {
             yield return null;
         }
+        yield return new WaitForSeconds(0.25f);
     }
 
-    private void ShowTargetSelectionUI(List<Entity> validTargets)
+    private void ShowTargetSelectionUI(List<Enemy> validTargets)
     {
-        //Show the target selection UI
+        targetSelectionUI.SetActive(true);
+        foreach (Enemy e in validTargets)
+        {
+            e.toggleTarget();
+        }
+    }
+
+    public void selectTarget(int screenSlot)
+    {
+        //If there is a valid target enemy in the screen slot then select it. Otherwise do nothing.
+        //It needs to look through a list of Entities for a screen slot but the screen slot is only in the enemy child class. It then needs to put the result into an enemy
+        selectedTarget = validTargets.Find(e => e.screenSlot == screenSlot);
+        if (selectedTarget != null)
+        {
+            targetSelectionUI.SetActive(false);
+            foreach (Enemy e in validTargets)
+            {
+                if (e != selectedTarget)
+                {
+                    e.toggleTarget();
+                }
+                else
+                {
+                    e.toggleColor();
+                }
+            }
+        }
     }
 
     /// <summary>
     /// Handles the menu selection of a target
     /// </summary>
     /// <param name="target">The target selected</param>
-    private void OnTargetSelected(Entity target)
+    private void OnTargetSelected(Enemy target)
     {
         selectedTarget = target;
     }
@@ -217,7 +258,9 @@ public class TurnManager : MonoBehaviour
             }
             // Spawn the enemy at successive spawn points
             e.prefab = Instantiate(e.prefab, spawnPoints[e.fight_id].transform.position, Quaternion.identity);
+            e.screenSlot = e.fight_id;
             e.GameSetup();
+            //e.loadTargetRing();
             entities.Add(e);
         }
         return entities;
