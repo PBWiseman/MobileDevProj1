@@ -3,7 +3,7 @@ guid: fce28c1333759044096b38a7b206b4a2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,6 +64,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -74,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -86,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -98,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -110,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -122,6 +129,20 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -643,37 +664,36 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       assets9_0: -260848972
-      assets9_5: -1078228196
-      assets9_6: 975762190
-      assets9_23: 1576641734
-      assets9_12: -1013586861
-      assets9_19: -144416889
       assets9_1: 1990617837
-      assets9_4: -118217448
-      assets9_3: 888521439
-      assets9_15: -553948926
+      assets9_10: 1549768943
+      assets9_11: -572675156
+      assets9_12: -1013586861
       assets9_13: 986110638
-      assets9_7: 1258345024
+      assets9_14: -1136103747
+      assets9_15: -553948926
+      assets9_16: -2145119080
       assets9_17: 1995744395
       assets9_18: -574035133
-      assets9_22: -351713670
-      assets9_28: -1025794837
-      assets9_8: 1054895108
-      assets9_10: 1549768943
-      assets9_25: -2014689042
+      assets9_19: -144416889
+      assets9_2: -1604571534
+      assets9_20: 1415311410
       assets9_21: 1492236325
-      assets9_16: -2145119080
-      assets9_11: -572675156
-      assets9_14: -1136103747
+      assets9_22: -351713670
+      assets9_23: 1576641734
       assets9_24: -847009944
+      assets9_25: -2014689042
       assets9_26: -693372353
       assets9_27: -1292928636
+      assets9_28: -1025794837
+      assets9_3: 888521439
+      assets9_4: -118217448
+      assets9_5: -1078228196
+      assets9_6: 975762190
+      assets9_7: 1258345024
+      assets9_8: 1054895108
       assets9_9: -1404979521
-      assets9_20: 1415311410
-      assets9_2: -1604571534
-  spritePackingTag: 
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
