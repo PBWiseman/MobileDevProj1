@@ -34,13 +34,13 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CreateNewPlayer(); //TODO: Option to load or make new player
+        player = CharacterManager.instance.player;
         startNewFight();
     }
 
     void Update()
     {
-        if (GameOver)
+        if (GameOver || TurnManager.instance.currentState == FightStates.Continue)
         {
             return;
         }
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         {
             //TODO: Give player loot. Maybe health potions?
             player.totalExperience += LevelManager.instance.getFightXp(level, fight);
-            //Check if the player has leveled up. Temp system until I decide on better xp values
+            //Check if the player has leveled up
             while (player.totalExperience >= player.level * 100)
             {
                 player.LevelUp();
@@ -68,101 +68,37 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                //End of the game?
+                //End of the game
                 player.gameWon = true;
                 Debug.Log("Player has won the game");
-                SavePlayers();
+                CharacterManager.instance.SavePlayers();
                 GameOver = true;
                 return;
             }
-            SavePlayers(); //After each turn
+            CharacterManager.instance.SavePlayers();
             TurnManager.instance.currentState = FightStates.Continue;
             startNewFight();
         }
         else if (TurnManager.instance.currentState == FightStates.Lose)
         {
             Debug.Log("Player has died");
-            SavePlayers();
+            CharacterManager.instance.SavePlayers();
             GameOver = true;
         }
     }
 
-    private void CreateNewPlayer()
-    {
-        players = LoadPlayers();
-        Player playerTemplate = LoadPlayerTemplate();
-        //TODO: Customizable name
-        string newName = "Bob";
-        player = new Player(playerTemplate, players.Count, newName); //Set the player id to the next available id
-        spawnPlayer(player);
-
-        //Save back to the json file
-        players.Add(player);
-        SavePlayers();
-    }
-
-    private void spawnPlayer(Player player)
+    public void spawnPlayer(Player player)
     {
         //Instantiate prefab from resources
         player.prefab = Instantiate(player.prefab, playerSpawnPoint.transform.position, Quaternion.identity);
         player.GameSetup();
     }
 
-    private Player getPlayer(int player_id)
-    {
-        List<Player> players = LoadPlayers();
-        Player player = players.Find(p => p.player_id == player_id);
-        spawnPlayer(player);
-        return player; //Note to self: This is the actual player entity from the list. It doesn't need to be saved back to it.
-    }
-
     private void startNewFight()
     {
         player.currentLevel = level;
         player.currentFight = fight; //Set the player's current level and fight for saving
-        SavePlayers();
+        CharacterManager.instance.SavePlayers();
         StartCoroutine(TurnManager.instance.MainTurnTracker(player, level, fight));
-    }
-
-    private List<Player> LoadPlayers()
-    {
-        string json;
-        if (File.Exists(savePath))
-        {
-            json = File.ReadAllText(savePath);
-            List<Player> players = JsonUtility.FromJson<PlayerData>(json).players;
-            return players;
-        }
-        else
-        {
-            players = new List<Player>();
-            return players;
-        }
-    }
-
-    private Player LoadPlayerTemplate()
-    {
-        string json = Resources.Load<TextAsset>("playerInfoTemplate").text;
-        Player player = JsonUtility.FromJson<PlayerData>(json).players[0]; //There will only be one player in the template file
-        return player;
-    }
-
-    private void SavePlayers()
-    {
-        PlayerData pd = new PlayerData();
-        //Make a new list without some of the fields that don't need to be saved
-        List<Player> playerSaves = new List<Player>();
-        foreach (Player p in players)
-        {
-            Player player = new Player(p);
-            player.prefab = null;
-            player.healthBar = null;
-            player.healthText = null;
-            player.fight_id = -1;
-            playerSaves.Add(player);
-        }
-        pd.players = playerSaves;
-        string json = JsonUtility.ToJson(pd, true);
-        File.WriteAllText(savePath, json);
     }
 }
