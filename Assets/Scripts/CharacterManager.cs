@@ -12,7 +12,7 @@ public class CharacterManager : MonoBehaviour
     public static CharacterManager instance;
     private string savePath => Application.persistentDataPath + "/playerInfo.json";
     private List<Player> players;
-    public Player player;
+    [HideInInspector]public Player player;
 
     void Awake()
     {
@@ -35,11 +35,10 @@ public class CharacterManager : MonoBehaviour
         }
         Player playerTemplate = LoadPlayerTemplate();
         player = new Player(playerTemplate, players.Count, name); //Set the player id to the next available id
-        GameManager.instance.spawnPlayer(player);
-
         //Save back to the json file
         players.Add(player);
         SavePlayers();
+        GameManager.instance.spawnPlayer(player);
     }
     
     public void LoadPlayer(int player_id)

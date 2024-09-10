@@ -22,7 +22,7 @@ public enum Attacks
 
 public class TurnManager : MonoBehaviour
 {
-    public FightStates currentState = FightStates.Continue;
+    public FightStates currentState;
     public static TurnManager instance;
     private Enemy selectedTarget;
     private Attacks selectedAttack;
@@ -41,6 +41,7 @@ public class TurnManager : MonoBehaviour
         {
             Destroy(this);
         }
+        currentState = FightStates.Continue;
     }
 
     public IEnumerator MainTurnTracker(Entity player, int level, int fight) //This is a list of all entities in the fight sorted by initiative

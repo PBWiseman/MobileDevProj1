@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        Application.targetFrameRate = 60;
         if (instance == null)
         {
             instance = this;
@@ -29,13 +28,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = CharacterManager.instance.player;
-        startNewFight();
     }
 
     void Update()
@@ -77,7 +69,7 @@ public class GameManager : MonoBehaviour
             }
             CharacterManager.instance.SavePlayers();
             TurnManager.instance.currentState = FightStates.Continue;
-            startNewFight();
+            StartNewFight();
         }
         else if (TurnManager.instance.currentState == FightStates.Lose)
         {
@@ -87,14 +79,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void spawnPlayer(Player player)
+    public void spawnPlayer(Player inputPlayer)
     {
         //Instantiate prefab from resources
-        player.prefab = Instantiate(player.prefab, playerSpawnPoint.transform.position, Quaternion.identity);
-        player.GameSetup();
+        inputPlayer.prefab = Instantiate(inputPlayer.prefab, playerSpawnPoint.transform.position, Quaternion.identity);
+        inputPlayer.GameSetup();
+        player = inputPlayer;
+        StartNewFight();
     }
 
-    private void startNewFight()
+    public void StartNewFight()
     {
         player.currentLevel = level;
         player.currentFight = fight; //Set the player's current level and fight for saving
