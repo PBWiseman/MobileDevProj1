@@ -68,7 +68,7 @@ public class CharacterManager : MonoBehaviour
         if (File.Exists(savePath))
         {
             json = File.ReadAllText(savePath);
-            List<Player> players = JsonUtility.FromJson<PlayerData>(json).players;
+            players = JsonUtility.FromJson<PlayerData>(json).players;
             return players;
         }
         else
@@ -102,5 +102,19 @@ public class CharacterManager : MonoBehaviour
         pd.players = playerSaves;
         string json = JsonUtility.ToJson(pd, true);
         File.WriteAllText(savePath, json);
+    }
+
+    public List<string> GetSaveInfo()
+    {
+        if (players == null)
+        {
+            players = LoadPlayers();
+        }
+        List<string> saveInfo = new List<string>();
+        foreach (Player p in players)
+        {
+            saveInfo.Add($"{p.player_id} - {p.name}: Level {p.level} - Fight: {p.currentLevel}.{p.currentFight}");
+        }
+        return saveInfo;
     }
 }
