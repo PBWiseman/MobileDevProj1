@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private bool GameOver = false; //TODO: Implement game over state
     private string savePath => Application.persistentDataPath + "/playerInfo.json";
     public GameObject playerSpawnPoint;
+    public List<Sprite> backgrounds;
+    public GameObject background;
 
     void Awake()
     {
@@ -56,6 +58,8 @@ public class GameManager : MonoBehaviour
             else if (level < LevelManager.instance.levelData.levels.Count)
             {
                 level++;
+                //Set the background
+                background.GetComponent<SpriteRenderer>().sprite = backgrounds[level - 1];
                 fight = 1;
             }
             else
@@ -84,13 +88,15 @@ public class GameManager : MonoBehaviour
         //Instantiate prefab from resources
         //Debug all fields to make sure they are set correctly
         inputPlayer.LoadPrefab();
-        foreach (var field in inputPlayer.GetType().GetFields())
-        {
-            Debug.Log($"{field.Name}: {field.GetValue(inputPlayer)}");
-        }
         inputPlayer.prefab = Instantiate(inputPlayer.prefab, playerSpawnPoint.transform.position, Quaternion.identity);
         inputPlayer.GameSetup();
         player = inputPlayer;
+        if (player.currentLevel != 0)
+        {
+            level = player.currentLevel;
+            fight = player.currentFight;
+        }
+        background.GetComponent<SpriteRenderer>().sprite = backgrounds[level - 1];
         StartNewFight();
     }
 

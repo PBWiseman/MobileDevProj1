@@ -113,7 +113,10 @@ public class CharacterManager : MonoBehaviour
         List<string> saveInfo = new List<string>();
         foreach (Player p in players)
         {
-            saveInfo.Add($"{p.player_id} - {p.name}: Level {p.level} - Fight: {p.currentLevel}.{p.currentFight}");
+            if (!p.gameWon)
+            {
+                saveInfo.Add($"{p.player_id} - {p.name}: Level {p.level} - Fight: {p.currentLevel}.{p.currentFight}");
+            }
         }
         return saveInfo;
     }

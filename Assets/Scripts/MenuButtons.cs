@@ -10,6 +10,7 @@ public class MenuButtons : MonoBehaviour
     public TMP_InputField nameInput;
     public TMP_Dropdown dropdown;
     public List<string> saves;
+    public GameObject menuCanvas;
 
     public void LoadGame()
     {
@@ -31,7 +32,24 @@ public class MenuButtons : MonoBehaviour
 
     public void StartLoadGame()
     {
+        if (saves.Count == 0)
+        {
+            return;
+        }
         int playerID = Convert.ToInt32(saves[dropdown.value].Split(' ')[0]);
+        //set MenuCanvas to inactive
+        menuCanvas.SetActive(false);
         CharacterManager.instance.LoadPlayer(playerID);
+    }
+
+    public void DeleteGame()
+    {
+        if (saves.Count == 0)
+        {
+            return;
+        }
+        int playerID = Convert.ToInt32(saves[dropdown.value].Split(' ')[0]);
+        CharacterManager.instance.DeletePlayer(playerID);
+        LoadGame();
     }
 }
