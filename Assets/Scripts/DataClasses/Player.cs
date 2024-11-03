@@ -14,7 +14,7 @@ public class Player : Entity
     
     //Constructor
     public Player(Player player, int player_id, string name)
-    : base(name, player.speed, player.maxHealth, player.attack, player.currentHealth)
+    : base(name, player.speed, player.maxHealth, player.attack, player.currentHealth, player.prefabDataPath)
     {
         this.player_id = player_id;
         this.totalExperience = player.totalExperience;
@@ -24,7 +24,7 @@ public class Player : Entity
     }
 
     //Copy constructor for saving to the file
-    public Player(Player player) : base(player.name, player.speed, player.maxHealth, player.attack, player.currentHealth)
+    public Player(Player player) : base(player.name, player.speed, player.maxHealth, player.attack, player.currentHealth, player.prefabDataPath)
     {
         this.player_id = player.player_id;
         this.totalExperience = player.totalExperience;

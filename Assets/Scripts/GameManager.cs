@@ -82,6 +82,12 @@ public class GameManager : MonoBehaviour
     public void spawnPlayer(Player inputPlayer)
     {
         //Instantiate prefab from resources
+        //Debug all fields to make sure they are set correctly
+        inputPlayer.LoadPrefab();
+        foreach (var field in inputPlayer.GetType().GetFields())
+        {
+            Debug.Log($"{field.Name}: {field.GetValue(inputPlayer)}");
+        }
         inputPlayer.prefab = Instantiate(inputPlayer.prefab, playerSpawnPoint.transform.position, Quaternion.identity);
         inputPlayer.GameSetup();
         player = inputPlayer;

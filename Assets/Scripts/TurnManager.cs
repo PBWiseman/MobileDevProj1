@@ -63,7 +63,8 @@ public class TurnManager : MonoBehaviour
                 }
                 //Set this entity to always be rendered on top
                 SpriteRenderer r = e.prefab.GetComponentInChildren<SpriteRenderer>();
-                r.sortingOrder = 2;
+                int originSort = r.sortingOrder;
+                r.sortingOrder = 10;
                 if (e.isPlayer)
                 {
                     //Player turn
@@ -100,7 +101,7 @@ public class TurnManager : MonoBehaviour
                     yield return new WaitForSeconds(0.25f);
                     yield return Movement(e, 1);
                 }
-                r.sortingOrder = 1;
+                r.sortingOrder = originSort;
                 switch (checkForEnd(entities))
                 {
                     case FightStates.Win:

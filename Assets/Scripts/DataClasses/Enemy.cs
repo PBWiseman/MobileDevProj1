@@ -12,7 +12,7 @@ public class Enemy : Entity
     SpriteRenderer sr;
 
     public Enemy(Enemy enemy, int copyNumber, int fight_id)
-        : base(enemy.name + " " + copyNumber, enemy.speed, enemy.maxHealth, enemy.attack, enemy.currentHealth)
+        : base(enemy.name + " " + copyNumber, enemy.speed, enemy.maxHealth, enemy.attack, enemy.currentHealth, enemy.prefabDataPath)
     {
         this.fight_id = fight_id;
         this.monster_id = enemy.monster_id;

@@ -61,7 +61,7 @@ public class Entity
         }
     }
 
-    public Entity(string name, int speed, int maxHealth, int attack, int currentHealth)
+    public Entity(string name, int speed, int maxHealth, int attack, int currentHealth, string prefabDataPath)
     {
         this.name = name;
         this.speed = speed;
@@ -69,6 +69,7 @@ public class Entity
         this.currentHealth = currentHealth;
         this.attack = attack;
         this.isDead = false;
+        this.prefabDataPath = prefabDataPath;
         this.prefab = Resources.Load<GameObject>(prefabDataPath);
     }
 
