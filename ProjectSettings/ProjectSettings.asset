@@ -163,7 +163,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.PBWisemanGames.PixelFights
     Lumin: com.DefaultCompany.com.unity.template.mobile2D
-    Standalone: com.DefaultCompany.com.unity.template.mobile2D
+    Standalone: com.PBWiseman-Games.PixelFights
     iPhone: com.DefaultCompany.com.unity.template.mobile2D
     tvOS: com.DefaultCompany.com.unity.template.mobile2D
   buildNumber:
