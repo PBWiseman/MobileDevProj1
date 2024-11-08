@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
         }
         if (TurnManager.instance.currentState == FightStates.Win)
         {
-            //TODO: Give player loot. Maybe health potions?
             player.totalExperience += LevelManager.instance.getFightXp(level, fight);
             //Check if the player has leveled up
             while (player.totalExperience >= player.level * 100)
@@ -112,7 +111,6 @@ public class GameManager : MonoBehaviour
 
     public void setAttackLabels()
     {
-        //Set the text based on the information from the 
         for (int i = 0; i < player.attacks.Count; i++)
         {
             attackLabels[i].GetComponent<TextMeshProUGUI>().text = player.attacks[i].name + "    " + (player.attacks[i].minDamage + player.attack) + "-" + (player.attacks[i].maxDamage + player.attack) + " dmg";
