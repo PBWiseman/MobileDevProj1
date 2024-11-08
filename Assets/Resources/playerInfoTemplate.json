@@ -6,7 +6,7 @@
             "speed": 10,
             "maxHealth": 800,
             "currentHealth": 800,
-            "attack": 15,
+            "attack": 0,
             "initiative": 0,
             "isPlayer": true,
             "isDead": false,
@@ -15,7 +15,30 @@
             "currentFight": 0,
             "totalExperience": 0,
             "level": 1,
-            "prefabDataPath": "HeroKnight"
+            "prefabDataPath": "HeroKnight",
+            "attacks": [
+                {
+                    "id": 0,
+                    "animation": "Attack1",
+                    "name": "Swing",
+                    "minDamage": 14,
+                    "maxDamage": 16
+                },
+                {
+                    "id": 1,
+                    "animation": "Attack2",
+                    "name": "Slash",
+                    "minDamage": 10,
+                    "maxDamage": 20
+                },
+                {
+                    "id": 2,
+                    "animation": "Attack3",
+                    "name": "Slam",
+                    "minDamage": 5,
+                    "maxDamage": 30
+                }
+            ]
         }
     ]
 }

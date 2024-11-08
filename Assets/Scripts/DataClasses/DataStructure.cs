@@ -37,3 +37,27 @@ public class PlayerData
 {
     public List<Player> players;
 }
+
+[System.Serializable]
+public class Attack
+{
+    public int id;
+    public string animation;
+    public string name;
+    public int minDamage;
+    public int maxDamage;
+
+    public Attack(int id, string name, int minDamage, int maxDamage)
+    {
+        this.id = id;
+        this.name = name;
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
+    }
+
+    public int GetDamage()
+    {
+        //Add 1 to maxDamage to make it inclusive
+        return Random.Range(minDamage, maxDamage+1);
+    }
+}

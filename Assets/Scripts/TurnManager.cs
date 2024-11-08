@@ -12,20 +12,13 @@ public enum FightStates //So the checkForEnd function doesn't need to deal with 
     Continue
 }
 
-public enum Attacks
-{
-    Attack1,
-    Attack2,
-    Attack3,
-    None
-}
-
 public class TurnManager : MonoBehaviour
 {
     public FightStates currentState;
     public static TurnManager instance;
     private Enemy selectedTarget;
-    private Attacks selectedAttack;
+    private Attack selectedAttack;
+    private List<Attack> attacks;
     [SerializeField] private List<GameObject> spawnPoints;
     [SerializeField] private GameObject attackSelectionUI;
     [SerializeField] private GameObject targetSelectionUI;
@@ -74,13 +67,14 @@ public class TurnManager : MonoBehaviour
                         selectedTarget = null;
                         ShowTargetSelectionUI(validTargets);
                         yield return StartCoroutine(WaitForTargetSelection());
-                        selectedAttack = Attacks.None;
+                        attacks = ((Player)e).attacks;
+                        selectedAttack = null;
                         ShowAttackSelectionUI();
                         yield return StartCoroutine(WaitForAttackSelection());
-                        player.playAnimation(selectedAttack.ToString());
+                        player.playAnimation(selectedAttack.animation);
                         yield return Movement(e, 1);
                         yield return new WaitForSeconds(0.25f);
-                        selectedTarget.TakeDamage(player.attack);
+                        selectedTarget.TakeDamage(((Player)e).attackDamage(selectedAttack.id));
                         selectedTarget.toggleColor();
                         selectedTarget.toggleTarget();
                         yield return new WaitForSeconds(0.25f);
@@ -165,7 +159,6 @@ public class TurnManager : MonoBehaviour
     /// <param name="e">The entity to kill</param>
     private IEnumerator EntityDeath(Entity e)
     {
-        //yield return new WaitForSeconds(1);
         e.HideHealthBar();
         e.playAnimation("Death");
         yield return new WaitForSeconds(1);
@@ -174,7 +167,7 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator WaitForAttackSelection()
     {
-        while (selectedAttack == Attacks.None)
+        while (selectedAttack == null)
         {
             yield return null;
         }
@@ -188,7 +181,14 @@ public class TurnManager : MonoBehaviour
 
     public void selectAttack(int attack)
     {
-        selectedAttack = (Attacks)attack;
+        foreach (Attack a in attacks)
+        {
+            if (a.id == attack)
+            {
+                selectedAttack = a;
+                break;
+            }
+        }
         attackSelectionUI.SetActive(false);
     }
 
