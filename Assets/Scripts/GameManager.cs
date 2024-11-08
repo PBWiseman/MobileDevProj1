@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerSpawnPoint;
     public List<Sprite> backgrounds;
     public GameObject background;
+    public GameObject[] attackLabels;
 
     void Awake()
     {
@@ -104,7 +105,17 @@ public class GameManager : MonoBehaviour
     {
         player.currentLevel = level;
         player.currentFight = fight; //Set the player's current level and fight for saving
+        setAttackLabels();
         CharacterManager.instance.SavePlayers();
         StartCoroutine(TurnManager.instance.MainTurnTracker(player, level, fight));
+    }
+
+    public void setAttackLabels()
+    {
+        //Set the text based on the information from the 
+        for (int i = 0; i < player.attacks.Count; i++)
+        {
+            attackLabels[i].GetComponent<TextMeshProUGUI>().text = player.attacks[i].name + "    " + (player.attacks[i].minDamage + player.attack) + "-" + (player.attacks[i].maxDamage + player.attack) + " dmg";
+        }
     }
 }

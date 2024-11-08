@@ -6661,6 +6661,7 @@ MonoBehaviour:
     totalExperience: 0
     level: 0
     gameWon: 0
+    attacks: []
   players: []
   playerSpawnPoint: {fileID: 97797362}
   backgrounds:
@@ -6668,6 +6669,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8c2dab3d9ebdc3e44bf0672fd9bd5aa1, type: 3}
   - {fileID: 21300000, guid: 935a4070e98995d429fcb3f7d1f1063a, type: 3}
   background: {fileID: 1381310569}
+  attackLabels:
+  - {fileID: 502399361}
+  - {fileID: 995528970}
+  - {fileID: 1537489593}
 --- !u!1 &1940034613
 GameObject:
   m_ObjectHideFlags: 0
@@ -7288,6 +7293,7 @@ MonoBehaviour:
     totalExperience: 0
     level: 0
     gameWon: 0
+    attacks: []
 --- !u!1 &2119588730
 GameObject:
   m_ObjectHideFlags: 0
