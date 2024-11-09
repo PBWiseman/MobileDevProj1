@@ -717,7 +717,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &202014131
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7033,7 +7033,7 @@ MonoBehaviour:
   - {fileID: 502399361}
   - {fileID: 995528970}
   - {fileID: 1537489593}
-  gameOverPanel: {fileID: 0}
+  gameOverPanel: {fileID: 357019433}
 --- !u!1 &1940034613
 GameObject:
   m_ObjectHideFlags: 0

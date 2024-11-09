@@ -1,8 +1,11 @@
 {
   "enemies": [
-    {"monster_id": 0, "name": "Evil Wizard", "speed": 10, "maxHealth": 20, "currentHealth": 20, "attack": 15, "experienceReward": 100, "prefabDataPath": "EvilWizard"},
-    {"monster_id": 1, "name": "Heavy Bandit", "speed": 10, "maxHealth": 30, "currentHealth": 30, "attack": 10, "experienceReward": 75, "prefabDataPath": "HeavyBandit"},
-    {"monster_id": 2, "name": "Light Bandit", "speed": 8, "maxHealth": 20, "currentHealth": 20, "attack": 5, "experienceReward": 50, "prefabDataPath": "LightBandit"}
+    {"monster_id": 0, "name": "Evil Wizard", "speed": 10, "maxHealth": 50, "currentHealth": 50, "attack": 20, "experienceReward": 100, "prefabDataPath": "EvilWizard"},
+    {"monster_id": 1, "name": "Heavy Bandit", "speed": 10, "maxHealth": 40, "currentHealth": 40, "attack": 20, "experienceReward": 75, "prefabDataPath": "HeavyBandit"},
+    {"monster_id": 2, "name": "Light Bandit", "speed": 8, "maxHealth": 30, "currentHealth": 30, "attack": 12, "experienceReward": 50, "prefabDataPath": "LightBandit"},
+    {"monster_id": 3, "name": "Evil Fighter", "speed": 7, "maxHealth": 20, "currentHealth": 20, "attack": 9, "experienceReward": 40, "prefabDataPath": "EvilFighter"},
+    {"monster_id": 4, "name": "Evil Necromancer", "speed": 10, "maxHealth": 60, "currentHealth": 60, "attack": 25, "experienceReward": 120, "prefabDataPath": "EvilNecromancer"},
+    {"monster_id": 5, "name": "Evil Sorcerer", "speed": 15, "maxHealth": 70, "currentHealth": 70, "attack": 40, "experienceReward": 150, "prefabDataPath": "EvilSorcerer"}
   ],
   "levels": [
     {
@@ -11,22 +14,23 @@
         {
           "fight": 1,
           "entities": [
-            {"monster_id": 1, "count": 1},
-            {"monster_id": 2, "count": 1}
+            {"monster_id": 2, "count": 1},
+            {"monster_id": 3, "count": 2}
           ]
         },
         {
           "fight": 2,
           "entities": [
-            {"monster_id": 0, "count": 1},
-            {"monster_id": 1, "count": 1}
+            {"monster_id": 3, "count": 1},
+            {"monster_id": 1, "count": 1},
+            {"monster_id": 2, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"monster_id": 2, "count": 1},
-            {"monster_id": 0, "count": 1}
+            {"monster_id": 0, "count": 1},
+            {"monster_id": 2, "count": 2}
           ]
         }
       ]
@@ -37,24 +41,21 @@
         {
           "fight": 1,
           "entities": [
-            {"monster_id": 1, "count": 1},
-            {"monster_id": 2, "count": 1},
-            {"monster_id": 0, "count": 1}
+            {"monster_id": 1, "count": 2}
           ]
         },
         {
           "fight": 2,
           "entities": [
             {"monster_id": 1, "count": 2},
-            {"monster_id": 2, "count": 1}
+            {"monster_id": 3, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"monster_id": 0, "count": 1},
-            {"monster_id": 2, "count": 1},
-            {"monster_id": 1, "count": 1}
+            {"monster_id": 2, "count": 2},
+            {"monster_id": 4, "count": 1}
           ]
         }
       ]
@@ -75,15 +76,14 @@
           "entities": [
             {"monster_id": 1, "count": 1},
             {"monster_id": 2, "count": 1},
-            {"monster_id": 0, "count": 1}
+            {"monster_id": 4, "count": 1}
           ]
         },
         {
           "fight": 3,
           "entities": [
-            {"monster_id": 0, "count": 1},
-            {"monster_id": 2, "count": 1},
-            {"monster_id": 1, "count": 1}
+            {"monster_id": 1, "count": 2},
+            {"monster_id": 5, "count": 1}
           ]
         }
       ]
