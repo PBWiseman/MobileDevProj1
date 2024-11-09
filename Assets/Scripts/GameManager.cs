@@ -42,6 +42,10 @@ public class GameManager : MonoBehaviour
         if (TurnManager.instance.currentState == FightStates.Win)
         {
             player.totalExperience += LevelManager.instance.getFightXp(level, fight);
+            //Heal the player
+            player.currentHealth = player.maxHealth;
+            //Update health bar
+            player.TakeDamage(0);
             //Check if the player has leveled up
             while (player.totalExperience >= player.level * 100)
             {
