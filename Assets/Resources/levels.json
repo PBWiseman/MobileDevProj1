@@ -12,7 +12,6 @@
           "fight": 1,
           "entities": [
             {"monster_id": 1, "count": 1},
-            {"monster_id": 0, "count": 1},
             {"monster_id": 2, "count": 1}
           ]
         },

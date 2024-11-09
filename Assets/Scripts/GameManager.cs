@@ -14,12 +14,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public Player player;
     public List<Player> players;
-    private bool GameOver = false; //TODO: Implement game over state
+    private bool GameOver = false;
     private string savePath => Application.persistentDataPath + "/playerInfo.json";
     public GameObject playerSpawnPoint;
     public List<Sprite> backgrounds;
     public GameObject background;
     public GameObject[] attackLabels;
+    public GameObject gameOverPanel;
 
     void Awake()
     {
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Player has died");
             CharacterManager.instance.SavePlayers();
             GameOver = true;
+            gameOverPanel.SetActive(true);
         }
     }
 
